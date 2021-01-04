@@ -23,6 +23,7 @@ def procesos(request):
     empresa = request.session['EmpresaUsuario']
     unidad = request.session['UnidadUsuario']
     cargo = request.session['CargoUsuario']
+    dawdaw = request.session['CargoUsuario']
 
     data = {
         'procesos': listar_procesos_ejecutados(),
@@ -31,7 +32,7 @@ def procesos(request):
         'terminadas': tareas_terminadas(),
         'en_curso': tareas_en_curso(),
         'detenidas': tareas_detenidas(),
-
+        
     }
 
     return render(request, 'DashboardCliente/dashboard.html', data)
