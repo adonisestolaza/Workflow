@@ -1,0 +1,114 @@
+{% extends 'menuPrincipal.html' %} {% block content %}
+<div class="container-fluid">
+
+    <!-- Lista de  Indicadores -->
+    <div class="row">
+        <div class="col-sm">
+            <h5 class=""> TAREAS TERMINADAS </h5>
+            <table class="table table-striped">
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Estado</th>
+                </tr>
+                {% for t in terminadas %}
+                <tr>
+                    <td>{{t.0}}</td>
+                    <!--aqui deberia ir un incrementador para entregar el id -->
+                    <td>{{t.1}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="col-sm">
+            <h5 class="">TAREAS EN CURSO </h5>
+            <table class="table table-striped">
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Estado</th>
+                </tr>
+                {% for ec in en_curso %}
+                <tr>
+                    <td>{{ec.0}}</td>
+                    <!--aqui deberia ir un incrementador para entregar el id -->
+                    <td>{{ec.1}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-sm">
+            <h5> TAREAS DETENIDAS </h5>
+            <table class="table table-striped">
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Estado</th>
+                </tr>
+                {% for d in detenidas %}
+                <tr>
+                    <td class="vl1">{{d.0}}</td>
+                    <!--aqui deberia ir un incrementador para entregar el id -->
+                    <td>{{d.1}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <h5> Lista de procesos ejecutados</h5>
+            <table class="table table-striped">
+                <tr>
+                    <th>Cantidad de procesos</th>
+                    <th>nombre</th>
+                    <th>descripcion</th>
+                    <th>fecha ejecucion</th>
+                    <th>fecha termino</th>
+                    <th>proceso tipo</th>
+                </tr>
+                {% for pe in procesos %}
+                <tr>
+                    <td>{{pe.0}}</td>
+                    <td>{{pe.1}}</td>
+                    <td>{{pe.2}}</td>
+                    <td>{{pe.3}}</td>
+                    <td>{{pe.4}}</td>
+                    <td>{{pe.5}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <!-- Carga del Dashboard -->
+    <div class="row">
+        <div class="col-sm">
+            <h5 class=""> Lista de tareas ejecutadas </h5>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Cantidad de tareas</th>
+                        <th>nombre</th>
+                        <th>descripcion</th>
+                        <th>Estado</th>
+                        <th>Semaforo</th>
+                    </tr>
+                    {% for tt in tareatipo %}
+                    <tr>
+                        <td>{{tt.0}}</td>
+                        <!--aqui deberia ir un incrementador para entregar el id -->
+                        <td>{{tt.1}}</td>
+                        <td>{{tt.2}}</td>
+                        <td>{{tt.3}}</td>
+                        <td>{{tt.4}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

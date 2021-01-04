@@ -1,0 +1,6 @@
+<option value="">Seleccionar Proceso...</option>
+{% for i in procesos_ejecutados  %}
+ 
+<option value="{{ i.1 }}">{{ i.1 }} - {{ i.4 }}</option>
+
+{% endfor  %}

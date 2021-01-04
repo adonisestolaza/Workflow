@@ -1,0 +1,6 @@
+<option value="" selected disabled>Seleccione Responsable...</option>
+{% for u in usuarios  %}
+ 
+<option value="{{ u.0 }}">{{ u.1 }}</option>
+
+{% endfor  %}

@@ -1,0 +1,214 @@
+{% extends 'menuPrincipal.html' %}
+
+{% block tittle %} Registrar Usuario {% endblock %}
+{% load static %}
+
+{% block content %} 
+
+
+<div class="container">
+  <h4>Agregar Nuevo Usuario</h4>
+  <!-- Formulario de ingreso -->
+
+  
+  <p>Para registrar una nuevo usuario debe llenar los campos necesarios en este Formulario</p>
+
+  <div class="from-group">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>
+            <div class="alert alert-success">{{ message }}</div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+</div>
+  
+<form  method="POST">
+  {% csrf_token %}
+  <div class="form-group">
+    <div class="input-field center col l4 offset-l4 s12">
+      <img class="circle" src="{% static 'img/User-Icon2.jpg' %}" alt="">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="col-s12">
+      <div class="form-group">
+        {{ form.rol }}
+      </div>
+    </div>
+   
+  </div>
+
+  <div class="form-row">
+    <div class="col">
+      <div class="form-group">
+        {{ form.cargo }}
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        {{ form.cargo }}
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        {{ form.cargo }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s6">
+      
+        <label>Rut</label>
+        {{ form.rut }}
+                  
+      
+    </div>
+   
+  </div>
+  <div class="row">
+    <div class="input-field col s6">
+      <label>Nombres</label>
+      {{ form.nombres }}
+      
+    </div>
+    <div class="input-field col s6">
+        <label>Apellidos</label>
+        {{ form.apellidos }}
+      
+    </div>
+  </div>
+
+ 
+        <div class="row">
+           
+
+              <div class="row"  id="Cargos">
+                
+               
+                <div class="input-field col l4 offset-l4 s12" >
+                    
+                    {{ form.cargo }}
+                  
+                </div>
+                
+              </div>
+
+              <div class="row">
+               
+                <div class="input-field col s8">
+                  <i class="material-icons prefix">border_color</i>
+                  
+                  {{ form.rut }}
+                  <label>Rut</label>
+                  
+                  
+                </div>
+               
+              </div>
+
+              
+              <div class="row">
+                <div class="input-field col l12 s12">
+                  <i class="material-icons prefix">location_on</i>
+                  <label>Dirección</label>
+                  {{ form.direccion }}
+                  
+                </div>
+              </div>
+
+              <div class="row">
+                
+                <div class="input-field col l6 s12">
+                  <i class="material-icons prefix">phone_android</i>
+                  <label>Telefono</label>
+                  {{ form.telefono }}
+                  
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col l12 s12">
+                    <i class="material-icons prefix">email</i>
+                    <label>Correo Electronico</label>
+                    {{ form.correo }}
+                </div>
+                   
+                   
+                  
+              </div>
+
+              <div class="row">
+                <div class="input-field col l6 s12">
+                    <i class="material-icons prefix">lock</i>
+                    <label>Contraseña</label>
+                    {{ form.password1}}
+                </div>
+
+                <div class="input-field col l6 s12">
+                    <label>Repetir Contraseña</label>
+                    {{ form.password2 }}
+                </div>
+                   
+                   
+                  
+              </div>
+
+
+              <div class="row">
+                <div class="col s12 l12 center">
+                  <button class="btn-large waves-effect waves-light  blue lighten-1" type="submit" name="action">Agregar Usuario
+                    <i class="material-icons right">send</i>
+                  </button>
+                </div>
+              </div>
+    
+        </div>
+       
+
+
+
+    </div>
+
+
+     
+
+    </form>>    
+
+</div>   
+
+<script>
+
+    $(document).ready(function(){
+      $('#div_empresa').hide()
+      $('#div_unidad').hide()
+      $('#div_cargo').hide()
+    
+    });
+ 
+
+    function Cambiar(){
+
+        debugger;
+
+        var valor = $('#id_rol').val();
+
+        if (valor == "1") {
+            $('#Cargos').show()
+        }
+        else if (valor == "2") {
+            $('#Cargos').show()
+        }
+        else {
+            $('#Cargos').show()
+        }
+    };
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'menuPrincipal.html' %}
+{% block content %}
+<div class="container">
+
+  <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+    Agregar mensaje a <span class="text-primary">{{ request.session.TareaNombre }}</span>
+  </h2> <!-- Formulario de ingreso -->
+  <p>Para insertar un mensaje debe completar los campos</p>
+
+  <div class="from-group">
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li>
+        <div class="alert alert-success">{{ message }}</div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+  </div>
+  <form method="POST">
+    {% csrf_token  %}
+
+
+    <div class="form-group">
+      <label for="asunto">Asunto</label>
+      <input id="asunto" type="text" class="form-control" name="asunto">
+    </div>
+
+    <div class="form-group">
+      <label for="mensaje">Mensaje</label>
+      <input id="mensaje" type="text" class="form-control" name="mensaje">
+    </div>
+
+    <button class="btn btn-success" type="submit" name="action">Insertar mensaje</button>
+    {% if user.rol_id == 4 %}
+    <a href="{% url 'lista_procesos_jefe'%}" class="btn btn-primary">Volver</a>
+    {% else %}
+    <a href="{% url 'tareas' %}" class="btn btn-primary">Volver</a>
+    {% endif %}
+  </form>
+
+</div>
+{% endblock %}

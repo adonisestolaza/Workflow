@@ -1,0 +1,6 @@
+<option value="" selected disabled>Seleccione Cargo...</option>
+{% for c in cargos  %}
+ 
+<option value="{{ c.0 }}">{{ c.1 }}</option>
+
+{% endfor  %}

@@ -1,0 +1,60 @@
+{% extends 'menuPrincipal.html' %}
+
+{% load static %}
+{% block content %}
+
+<h3 onload="tareaUsuario()"></h3>
+
+<div name="id_usuario" id="id_usuario" data-value="{{ user.id }}"></div>
+
+<!-- Form terminar tarea -->
+<div class="container">
+  <div class="row">
+    <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+      Historial Tareas <span class="text-primary"> Usuario</span>
+    </h2>
+
+  </div>
+
+  <div class="row">
+    <p>Listado de mi historial de tareas.</p>
+  </div>
+
+  <!-- Tabla que carga las tareas del usuario -->
+  <div class="row">
+      <div id="idtarea">
+      </div>
+  </div>
+
+
+  <div class="row">
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li>
+        <div class="alert alert-success">{{ message }}</div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+
+</div>
+
+
+<!-- Scripts select anidados -->
+<script>
+  window.onload = function tareaUsuario() {
+
+    var idusuario = document.getElementById('id_usuario').getAttribute('data-value');
+    let url = "/ejecucion/listar_historial_usuario/?id_usuario=" + idusuario;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("idtarea").innerHTML = result;
+      });
+  }
+</script>
+{% endblock %}

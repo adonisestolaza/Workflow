@@ -1,0 +1,80 @@
+{% extends 'menuPrincipal.html' %}
+{% block content %}
+<div class="container">
+  <br>
+  <h3 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+    {{ request.session.UnidadUsuario }} - <span class="text-primary">{{ request.session.EmpresaUsuario }}</span>
+  </h3>
+  <p>Haga click en las unidades de la empresa {{ request.session.EmpresaUsuario }} para ver el detalle de sus tareas.
+  </p>
+
+  <div class="row">
+    <table class="table table-striped">
+      <thead class="bg-wf text-white text-center">
+        {% for ct in cantidad_tareas %}
+        <tr>
+          <th> Cantidad de Tareas:</th>
+          <th> {{ct.0}}</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+        {% for cte in cantidad_tareasEstado %}
+        <tr>
+          <td>{{cte.0}}</td>
+          <td>{{cte.1}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      {% endfor %}
+
+    </table>
+  </div>
+  <!-- empieza los desplegables -->
+
+  <h4 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+    Lista de proceso de la Unidad: {{ request.session.UnidadUsuario }}
+  </h4>
+  <p>Lista de procesos <b>Activos</b> de la unidad {{ request.session.UnidadUsuario }}</p>
+  <br>
+  <div class="row">
+    <div class="col-sm-12">
+      {% for p in procesos %}
+      <h5 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+        Proceso {{p.6}} - {{p.5}}
+      </h5>
+
+      <table class="table table-striped table-sm">
+        <thead class="bg-wf text-white text-center">
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Estado</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Término</th>
+          <th>Responsable</th>
+        </thead>
+        <tbody> 
+          <tr>
+              {% for t in tareas %}
+              {% if p.6 == t.2 %}
+              <tr>
+                <td>{{t.9}} </td>
+                <td>{{t.4}}</td>
+                <td>{{t.7}} </td>
+                <td>{{t.5}} </td>
+                <td>{{t.6}}</td>
+                <td>{{t.8}}</td>
+              </tr>
+              {% endif %}
+              {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      {% endfor %}
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

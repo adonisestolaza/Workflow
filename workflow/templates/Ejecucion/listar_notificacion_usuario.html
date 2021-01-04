@@ -1,0 +1,57 @@
+{% if not notificacion_user  %}
+<a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false">
+    <i class="fas fa-bell fa-fw text-white"></i>
+    <!-- Counter - Alerts -->
+    <span class="badge badge-danger badge-counter"></span>
+</a>
+<!-- Dropdown - Alerts -->
+<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+    <h6 class="dropdown-header">
+        Centro Alertas
+    </h6>
+    <a class="dropdown-item d-flex align-items-center">
+        <div class="mr-3">
+            <div class="icon-circle bg-primary">
+                <i class="fas fa-file-alt text-white"></i>
+            </div>
+        </div>
+        <div>
+            <div class="text-truncate">¡Hola!  no tienes nuevas notificaciones</div>
+        </div>
+    </a>
+
+
+</div>
+
+
+{% else %}
+<a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false">
+    <i class="fas fa-bell fa-fw text-white"></i>
+    <!-- Counter - Alerts -->
+    <span class="badge badge-danger badge-counter">!</span>
+</a>
+<!-- Dropdown - Alerts -->
+<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+    <h6 class="dropdown-header">
+        Centro Alertas
+    </h6>
+    {% for t in notificacion_user %}
+    <a class="dropdown-item d-flex align-items-center" href="#">
+        <div class="mr-3">
+            <div class="icon-circle bg-primary">
+                <i class="fas fa-file-alt text-white"></i>
+            </div>
+        </div>
+        <div>
+            <div class="small text-gray-500">¡Hola! {{ t.2 }}</div>
+            <span class="font-weight-bold">Se te asigno la tarea: {{ t.3 }}</span>
+            <div class="small text-gray-500">Fecha estimada termino: {{ t.6 | date:"d/m/Y" }}</div>
+        </div>
+    </a>
+    <a class="dropdown-item text-center small text-gray-500" href="{% url 'notificacion_leida' t.0 %}">Leida</a>
+    {% endfor %}
+    
+    {% endif %}
+</div>

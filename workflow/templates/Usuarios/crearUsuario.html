@@ -1,0 +1,43 @@
+{% extends 'menuPrincipal.html' %}
+
+{% block content %}
+<body>  
+  <h1>Gestion de clientes</h1>
+  
+  <h2>clientes</h2>
+  <h2>nuevo cliente</h2>
+  <form action="" method="POST">
+       {% csrf_token  %}
+       <label for="">Run</label>
+       <input type="number" name="run" id="run">
+       <br>
+       <label for="">Nombre</label>
+       <input type="text" name="nombre">
+       <br>
+       <label for="">Apellido</label>
+       <input type="text" name="apellido">
+       <br>
+       <input type="submit" value="Guardar">
+  </form>
+  {{mensaje}}
+  <table>
+     <tr>
+       <th>Run</th>
+       <th>Nombre</th>
+       <th>Apellido</th>
+     </tr>
+  
+     {% for c in clientes %}
+         <tr>
+             <td>{{ c.0 }}</td>
+             <td>{{ c.1 }}</td>
+             <td>{{ c.2 }}</td>
+         </tr>
+  
+     {% endfor %}
+  </table>
+  
+  </body>
+{% endblock %}
+
+

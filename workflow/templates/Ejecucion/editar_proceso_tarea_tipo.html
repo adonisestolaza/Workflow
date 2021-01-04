@@ -1,0 +1,80 @@
+{% extends 'menuPrincipal.html' %}
+
+{% load static %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+      Lista de Tareas del proceso <span class="text-primary"> {{ procesos_tarea.0.0 }}</span>
+    </h2>
+  </div>
+  <div class="row">
+    <p>Para editar una tarea seleccionar lápiz naranjo</p>
+  </div>
+  <hr>
+  <div class="from-group">
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li>
+        <div class="alert alert-success">{{ message }}</div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+  </div>
+
+  <form action="" method="POST">
+    {% csrf_token  %}
+    <div class="form-row align-items-center">
+
+
+      <!-- Carga la tabla con las tareas del proceso seleccionado -->
+      <div class="col-12 my-1">
+        <!-- Carga las tareas del proceso selecionado -->
+        <br>
+        <div class="h5 display-5 font-weight-bold text-secondary mt-lg-n2">
+          Detalle de Tareas del Proceso
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped " name="tareasid" id="tareasid">
+            <thead class="table-dark text-white text-center">
+                <tr>
+                  <th>Proceso</th>
+                  <th>Tarea</th>
+                  <th>Descripción</th>
+                  <th>Duración (Días)</th>
+                  <th>Orden Tarea</th>
+                  <th>Cargo</th>
+                  <th>Opciones</th>
+                </tr>
+              </thead>
+              {% for i in procesos_tarea %}
+              <tbody class="text-center">
+                <tr>
+                  <td>{{ i.0 }}</td>
+                  <td>{{ i.1 }}</td>
+                  <td>{{ i.2 }}</td>
+                  <td>{{ i.3 }}</td>
+                  <td>{{ i.4 }}</td>
+                  <td>{{ i.5 }}</td>
+                  <td>
+                    <a href="{% url 'editar_tarea' i.7 %}" class="btn bg-orange btn-sm"><i class="fas fa-edit"></i></a>
+                    <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
+                  </td>
+                </tr>
+              </tbody>
+              {% endfor %}
+          </table>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  
+
+</div>
+
+{% endblock %}

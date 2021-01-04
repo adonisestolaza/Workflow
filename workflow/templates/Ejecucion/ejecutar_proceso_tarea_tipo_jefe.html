@@ -1,0 +1,130 @@
+{% extends 'menuPrincipal.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+      Ejecución de <span class="text-primary"> Proceso Tipo</span>
+    </h2>
+    <h3 onload="cambiarUnidad()"></h3>
+    <h3 onload="unidadProceso()"></h3>
+
+  </div>
+  
+  <div class="row">
+    <p>En este menú puede buscar un proceso tipo perteneciente a su unidad para darle activarlo y darle ejecución.</p>
+  </div>
+
+  <form action="" method="POST">
+    {% csrf_token  %}
+    <div class="form-row align-items-center">
+
+      <!-- Selector de Empresas -->
+      <div name="id_empresa" id="id_empresa" data-value="{{ user.empresa_id }}"></div>
+
+      <!-- Selector de unidades -->
+      <div name="id_unidad" id="id_unidad" data-value="{{ user.unidad_id }}"></div>
+
+      <!-- Selector de Procesos -->
+      <div class="col-sm-5 my-1">
+        <label class="mr-sm-2" for="id_proceso">Procesos</label>
+        <select class="custom-select mr-sm-2" name="id_proceso" id="id_proceso" onchange="procesotareas()">
+          <option selected>Seleccione Proceso...</option>
+        </select>
+      </div>
+
+      <!-- Selector de Fecha de Ejecución -->
+      <div class="col-sm my-1">
+        <label for="fecha_ejecucion">Fecha de ejecución</label>
+        <input class="form-control" type="date" name="fecha_ejecucion" id="fecha_ejecucion">
+      </div>
+      <!-- Solo hacer espacio a la derecha-->
+      <div class="offset-sm-5">
+      </div>
+
+      <!-- Carga la tabla con las tareas del proceso seleccionado -->
+      <div class="col-12 my-1">
+        <!-- Carga las tareas del proceso selecionado -->
+        <br>
+        <div class="h5">Detalle de las Tareas del Proceso</div>
+        <div class="table-responsive">
+          <table class="table table-striped" name="tareasid" id="tareasid">
+            <!-- Carga de tareas -->
+          </table>
+        </div>
+      </div>
+
+      <!-- Boton ejecutar proceso -->
+      <div class="col-auto my-1">
+        <button type="submit" class="btn btn-primary">Ejecutar Proceso</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+<script>
+  window.onload = function cambiarUnidad() {
+    var empresaid = document.getElementById('id_empresa').getAttribute('data-value');
+
+    //let empresaid = document.getElementById("id_empresa").value;
+    let url = "/ejecucion/unidades/?empresa_id=" + empresaid;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("unidadId").innerHTML = result;
+      });
+  }
+</script>
+
+<script>
+  window.onload = function unidadProceso() {
+
+    var unidadid = document.getElementById('id_unidad').getAttribute('data-value');
+    let url = "/ejecucion/procesos_tipo/?unidadId=" + unidadid;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("id_proceso").innerHTML = result;
+      });
+  }
+</script>
+
+<script>
+  function procesotareas() {
+    let procesoid = document.getElementById("id_proceso").value;
+    let url = "/ejecucion/procesos_tarea/?procesoid=" + procesoid;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("tareasid").innerHTML = result;
+        fecha();
+      });
+  }
+
+</script>
+
+<script>
+  function fecha() {
+    var fecha = new Date(); //Fecha actual
+    var mes = fecha.getMonth() + 1; //obteniendo mes
+    var dia = fecha.getDate(); //obteniendo dia
+    var ano = fecha.getFullYear(); //obteniendo año
+    if (dia < 10)
+      dia = '0' + dia; //agrega cero si el menor de 10
+    if (mes < 10)
+      mes = '0' + mes //agrega cero si el menor de 10
+    document.getElementById('fecha_ejecucion').value = ano + "-" + mes + "-" + dia;
+  }
+</script>
+
+{% endblock %}

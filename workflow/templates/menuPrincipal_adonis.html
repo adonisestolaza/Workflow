@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content=""> {% if user.rol_id == 1 or user.rol_id == 2 %}
+    <title>Process</title>
+    <!-- Cargar el Favicon -->
+    <link rel="icon" href="{% static 'img/favicon.ico'%}"> {% else %}
+    <title>Workflow</title>
+    <!-- Cargar el Favicon -->
+    <link rel="icon" href="{% static 'img/workflow_fav.png'%}"> {% endif %}
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/workflow.css' %}" rel="stylesheet">
+
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        {% if user.rol_id == 1 or user.rol_id == 2 %}
+        <ul class="navbar-nav bg-process sidebar sidebar-dark accordion" id="accordionSidebar">
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <img src="{% static 'img/Process_small.png' %}" alt="" style="width: 100%;">
+            </a>
+            {% else %}
+            <ul class="navbar-nav bg-wf sidebar sidebar-dark accordion" id="accordionSidebar">
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                    <img src="{% static 'img/Workflow_b.png' %}" alt="" style="width: 100%;">
+                </a>
+                {% endif %}
+
+
+
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
+
+                <!-- Nav Item - Dashboard -->
+
+                <!-- URLs del Dashboard segun el rol -->
+                <li class="nav-item active">
+                    {% if user.rol_id == 1 %}
+                    <a class="nav-link" href="{% url 'lista_procesos_process'%}">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard <span class="text-process"> Administrador</span></span>
+                        {% elif user.rol_id == 2 %}
+                        <a class="nav-link" href="{% url 'lista_procesos_process'%}">
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <span>Dashboard <span class="text-process"> Diseñador</span></span>
+                            {% elif user.rol_id == 3 %}
+                            <a class="nav-link" href="{% url 'lista_procesos_gerente'%}">
+                                <i class="fas fa-fw fa-tachometer-alt"></i>
+                                <span>Dashboard <span class="text-wf"> Gerente</span></span>
+                                {% elif user.rol_id == 4 %}
+                                <a class="nav-link" href="{% url 'lista_procesos_jefe'%}">
+                                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                                    <span>Dashboard <span class="text-wf"> Jefe</span></span>
+                                    {% elif user.rol_id == 5 %}
+                                    <a class="nav-link" href="{% url 'lista_procesos'%}">
+                                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                                        <span>Dashboard <span class="text-wf"> Funcionario</span></span>
+                                        {% endif %}
+                                    </a>
+                </li>
+
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+
+                <!-- Heading -->
+
+                <!-- Paneles Exclusivos de Administrador-->
+                {% if user.rol_id == 1 %}
+                <div class="sidebar-heading">
+                    Panel de Gestión
+                </div>
+
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-user"></i>
+                        <span>Usuarios</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Usuarios:</h6>
+                            <a class="collapse-item" href="{% url 'registrarse' %}">Agregar</a>
+                            <a class="collapse-item" href="{% url 'lista_usuarios' %}">Listar</a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+
+                <div class="sidebar-heading">
+                    Empresas
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEmpresas" aria-expanded="true" aria-controls="collapseEmpresas">
+                        <i class="fas fa-fw fa-building"></i>
+                        <span>Panel de Empresas</span>
+                    </a>
+                    <div id="collapseEmpresas" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Gestión Empresas:</h6>
+                            <a class="collapse-item" href="{% url 'empresa' %}">Agregar</a>
+                            <a class="collapse-item" href="{% url 'lista_empresa' %}">Listar</a>
+                        </div>
+                    </div>
+                </li>
+
+                <div class="sidebar-heading">
+                    Unidades en Empresas
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUnidades" aria-expanded="true" aria-controls="collapseUnidades">
+                        <i class="fas fa-fw fa-briefcase"></i>
+                        <span>Unidades de Empresas</span>
+                    </a>
+                    <div id="collapseUnidades" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Gestión de Unidades:</h6>
+                            <a class="collapse-item" href="{% url 'unidad' %}">Agregar</a>
+                            <a class="collapse-item" href="{% url 'lista_unidad' %}">Listar</a>
+                        </div>
+                    </div>
+                </li>
+
+                <div class="sidebar-heading">
+                    Cargos en Empresas
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCargos" aria-expanded="true" aria-controls="collapseCargos">
+                        <i class="fas fa-fw fa-user-tie"></i>
+                        <span>Gestión de Cargos**</span>
+                    </a>
+                    <div id="collapseCargos" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Gestión de Cargos:</h6>
+                            <a class="collapse-item" href="#">Agregar</a>
+                            <a class="collapse-item" href="#">Listar</a>
+                        </div>
+                    </div>
+                </li>
+                {% endif %}
+                <!-- Divider -->
+                {% if user.rol_id == 2 or user.rol_id == 1 %}
+                <hr class="sidebar-divider">
+                <!-- Paneles de Diseñador y admin de Process-->
+
+                <div class="sidebar-heading">
+                    Gestión de Procesos
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProcesos" aria-expanded="true" aria-controls="collapseProcesos">
+                        <i class="fas fa-fw fa-wrench"></i>
+                        <span>Gestión de Procesos</span>
+                    </a>
+                    <div id="collapseProcesos" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Gestión de Flujos:</h6>
+                            <a class="collapse-item" href="{% url 'proceso' %}">Crear Flujo</a>
+                            <a class="collapse-item" href="{% url 'listar_procesos_tarea_tipo' %}">Flujos de Trabajo</a>
+                        </div>
+                    </div>
+                </li>
+                {% endif %}
+                <!-- Divider -->
+                {% if user.rol_id == 4 or user.rol_id == 3 %}
+                <hr class="sidebar-divider">
+                <!-- Paneles de Jefes-->
+
+                <div class="sidebar-heading">
+                    Flujos de Trabajo y ejecución
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFlujos" aria-expanded="true" aria-controls="collapseFlujos">
+                        <i class="fas fa-fw fa-wrench"></i>
+                        <span>Gestión de Procesos</span>
+                    </a>
+                    <div id="collapseFlujos" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Custom Utilities:</h6>
+                            <a class="collapse-item" href="{% url 'ejecutar_proceso' %}">Activar Flujo</a>
+                            <a class="collapse-item" href="{% url 'proceso_asignar'%}">Asignar Responsables</a>
+                        </div>
+                    </div>
+                </li>
+                {% endif %}
+
+                <!-- Divider -->
+                {% if user.rol_id == 4 or user.rol_id == 3 or user.rol_id == 5 %}
+
+                <!-- Paneles de Funcionario-->
+
+                <div class="sidebar-heading">
+                    Tareas
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFlujos" aria-expanded="true" aria-controls="collapseFlujos">
+                        <i class="fas fa-fw fa-wrench"></i>
+                        <span>Tareas</span>
+                    </a>
+                    <div id="collapseFlujos" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Panel de tareas:</h6>
+                            <a class="collapse-item" href="{% url 'tareas'%}">Mis Tareas</a>
+                            <a class="collapse-item" href="{% url 'historial_tareas_usuario'%}">Historial de Tareas</a> {% if user.rol_id == 3 %}
+                            <a class="collapse-item" href="{% url 'historial_tareas_usuario'%}">Historial de Tareas</a> {% endif %}
+                        </div>
+                    </div>
+                </li>
+                {% endif %}
+
+
+                <!-- Paneles de Gerencia-->
+                {% if user.rol_id == 3 %}
+
+                <div class="sidebar-heading">
+                    Reportes
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReportes" aria-expanded="true" aria-controls="collapseReportes">
+                        <i class="fas fa-fw fa-wrench"></i>
+                        <span>Reportes</span>
+                    </a>
+                    <div id="collapseReportes" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Reportes:</h6>
+                            <a class="collapse-item" href="{% url 'tareas'%}">Flujos de Trabajo</a>
+                            <a class="collapse-item" href="#">Rendimiento Tareas</a>
+                            <a class="collapse-item" href="#">Historial de Tareas</a>
+                        </div>
+                    </div>
+                </li>
+                {% endif %}
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Informes
+                </div>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Gráficos</span></a>
+                </li>
+
+                <!-- Nav Item - Tables -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Tablas</span></a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+
+            </ul>
+            <!-- End of Sidebar -->
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- Topbar -->
+
+                    {% if user.rol_id == 1 or user.rol_id == 2 %}
+                    <nav class="navbar navbar-expand navbar-light bg-orange topbar mb-4 static-top shadow">
+                        {% else %}
+                        <nav class="navbar navbar-expand navbar-light bg-wfhead topbar mb-4 static-top shadow">
+                            {% endif %}
+
+
+                            <!-- Sidebar Toggle (Topbar) -->
+                            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars text-process"></i>
+                    </button>
+
+                            <!-- Topbar Navbar -->
+                            <ul class="navbar-nav ml-auto">
+                                <h3 onkeyup="notificacionUsuario()"></h3>
+                                <div name="id_usuario" id="id_usuario" data-value="{{ user.id }}"></div>
+
+                                <!-- Nav Item - Alerts -->
+                                <li id="notificacion" class="nav-item dropdown no-arrow mx-1">
+                                </li>
+
+                                <!-- Nav Item - Messages -->
+                                <h3 onkeydown="mensajeUsuario()"></h3>
+                                <li id="mensaje" class="nav-item dropdown no-arrow mx-1">
+                                    
+                                </li>
+
+                                <div class="topbar-divider d-none d-sm-block"></div>
+
+                                <!-- Nav Item - User Information -->
+                                <li class="nav-item dropdown no-arrow">
+                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="mr-2 d-none d-lg-inline text-white small">{{ user.nombres }} {{ user.apellidos }}</span>
+                                        <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}">
+                                    </a>
+
+                                    <!-- Dropdown - User Information -->
+                                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Perfil
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i> Configuración
+                                        </a>
+
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Cerrar Sesión
+                                        </a>
+                                    </div>
+                                </li>
+
+                            </ul>
+
+                        </nav>
+                        <!-- End of Topbar -->
+
+                        <!-- Begin Page Content -->
+                        <div class="container-fluid">
+                            <!-- Aqui se llena de contenido -->
+                            {% block content %} {% endblock %}
+                        </div>
+
+
+                        <!-- /.container-fluid -->
+
+                </div>
+                <!-- End of Main Content -->
+
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Desarrollado - Workflow 2020</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End of Footer -->
+
+            </div>
+            <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¿Realmente quiere salir?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Seleccione "Salir" si está de acuerdo con cerrar esta sesión.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Salir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+    <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+
+    <script>
+        window.onkeyup =  function notificacionUsuario() {
+      
+          var idusuario = document.getElementById('id_usuario').getAttribute('data-value');
+          let url = "/ejecucion/notificacion/?id_usuario=" + idusuario;
+          fetch(url)
+            .then(function (result) {
+              return result.text();
+            })
+            .then(function (result) {
+              document.getElementById("notificacion").innerHTML = result;
+            });
+        }
+      </script>
+    
+    <script>
+       window.onkeydown = function mensajeUsuario() {
+      
+          var idusuario = document.getElementById('id_usuario').getAttribute('data-value');
+          let url = "/ejecucion/mensaje/?id_usuario=" + idusuario;
+          fetch(url)
+            .then(function (result) {
+              return result.text();
+            })
+            .then(function (result) {
+              document.getElementById("mensaje").innerHTML = result;
+            });
+        }
+      </script>
+
+
+</body>
+
+
+
+</html>

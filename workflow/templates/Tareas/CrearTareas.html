@@ -1,0 +1,268 @@
+{% extends 'menuPrincipal.html' %}
+
+{% block content %}
+<div class="container">
+  <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+    Crear Nueva <span class="text-primary"> Tarea</span>
+  </h2>
+  <p>Para registrar una nueva tarea debe llenar los campos necesarios en este Formulario</p>
+
+  <div class="h4 display-5 font-weight-bold text-secondary mt-lg-n2">
+    {{ request.session.NombreProceso }}
+  </div>
+
+  <div class="from-group">
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li>
+        <div class="alert alert-success">{{ message }}</div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+  </div>
+
+  <form class="col s12" method="POST">
+    {% csrf_token  %}
+    <div class="form-row">
+
+      <div class="col-4">
+        <div class="form-group">
+          <label class="mr-sm-2" for="cargo">Cargo</label>
+          <select class="custom-select mr-sm-2" name="cargo" id="cargo">
+            <option selected>Seleccione Cargo...</option>
+            {% for c in cargos  %}
+
+            <option value="{{ c.0 }}">{{ c.1 }}</option>
+
+            {% endfor  %}
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="col-8">
+        <div class="form-group">
+          <label for="tarea">Nombre Tarea</label>
+          <input id="tarea" class="form-control" type="text" class="validate" name="tarea" required
+            placeholder="Ingrese Nombre de la Tarea ">
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="col-8">
+        <div class="form-group">
+          <label for="descripcionTarea">Descripción Tarea</label>
+          <input id="descripcionTarea" class="form-control" type="text" class="validate" name="descripcionTarea"
+            required placeholder="Ingrese Descripción de la Tarea ">
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="col-8">
+        <div class="form-group">
+          <label for="tiempo">Duración de la Tarea (Días)</label>
+          <input id="tiempo" class="form-control" type="number" class="validate" name="tiempo" required
+            placeholder="Ingrese Tiempo de la Tarea ">
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="col-8">
+        <div class="form-group">
+          <label for="orden">Orden de la Tarea </label>
+          <input id="orden" class="form-control" type="number" class="validate" name="orden" required
+            placeholder="Ingrese Orden de la Tarea ">
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <br>
+    <br>
+
+
+    <button class="btn btn-success" type="submit" name="action" value="Guardar">Agregar Tarea</button>
+</div>
+
+
+<!-- Boton de agregar el Proceso -->
+
+
+</form>
+
+
+
+
+
+</div>
+
+<script>
+  //validacion de caracteres especiales en formularios
+  $("#formulario").keypress(function (event) {
+    var character = String.fromCharCode(event.keyCode);
+    return isValid(character);
+  });
+
+  function isValid(str) {
+    return !/[~`!#$%\^&*()=\\[\]\\';/{}|\\":<>\?]/g.test(str);
+  }
+</script>
+
+
+
+
+
+<script>
+  $('#agregarInvoice').click(function (e) {
+    // prevent click action
+    e.preventDefault();
+    // your code here
+    return false;
+  });
+</script>
+
+<script>
+  function agregarFila(tarea, descripcion, tiempo, cargoid, cargo) {
+
+    if (tarea.trim() == '') {
+      M.toast({
+        html: 'Porfavor ingrese Item de Servicio',
+        classes: 'rounded orange'
+      })
+      $('#item').formSelect();
+      return false;
+    }
+    if (descripcion.trim() == '') {
+      M.toast({
+        html: 'Porfavor ingrese descripción',
+        classes: 'rounded orange'
+      })
+      $('#descripcionItem').focus();
+      return false;
+    }
+    if (tiempo.trim() == '') {
+      M.toast({
+        html: 'Porfavor ingrese Valor',
+        classes: 'rounded orange'
+      })
+      $('#valorItem').focus();
+      return false;
+    }
+    if (cargo.trim() == '') {
+      M.toast({
+        html: 'Porfavor ingrese Valor',
+        classes: 'rounded orange'
+      })
+      $('#valorItem').focus();
+      return false;
+    } else {
+      var table = document.getElementById("tablaItems");
+      var row = table.insertRow(-1);
+
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      var cell4 = row.insertCell(3);
+      var cell5 = row.insertCell(4);
+      var cell6 = row.insertCell(5);
+      // Add some text to the new cells:
+      cell1.innerHTML = tarea;
+      cell2.innerHTML = descripcion;
+      cell3.innerHTML = tiempo;
+      cell4.innerHTML = cargo;
+      cell5.innerHTML = cargoid;
+      cell6.innerHTML = '<input class="btn red" type="button" value="Borrar" onclick="eliminarFilaID(this)">';
+      M.toast({
+        html: '¡Agregado exitosamente!',
+        classes: 'rounded green'
+      })
+    }
+  }
+
+  function eliminarFila() {
+    document.getElementById("tablaItems").deleteRow(-1);
+    M.toast({
+      html: '¡Eliminada exitosamente!',
+      classes: 'rounded red'
+    })
+  }
+
+  function eliminarFilaID(r) {
+    var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("tablaItems").deleteRow(i - 1);
+    M.toast({
+      html: '¡Eliminada exitosamente!',
+      classes: 'rounded red'
+    })
+  }
+</script>
+
+<script>
+  $('.dropdown-trigger').dropdown();
+</script>
+
+<script>
+  function cambiarUnidad() {
+
+    let empresaid = document.getElementById("empresa").value;
+    let url = "/ejecucion/unidades/?empresa_id=" + empresaid;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("unidad").innerHTML = result;
+      });
+  };
+
+  function unidadProceso() {
+
+    let unidadid = document.getElementById("unidad").value;
+    let url = "/ejecucion/procesos_tipo/?unidadId=" + unidadid;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("proceso").innerHTML = result;
+      });
+  };
+
+  function cambiarCargo() {
+
+    let unidadid = document.getElementById("unidad").value;
+    let url = "/mainwork/cargos/?unidad=" + unidadid;
+    fetch(url)
+      .then(function (result) {
+
+        return result.text();
+      })
+      .then(function (result) {
+
+        document.getElementById("cargo").innerHTML = result;
+      });
+  };
+</script>
+
+
+{% endblock %}

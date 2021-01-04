@@ -1,0 +1,159 @@
+{% extends 'menuPrincipal.html' %}
+
+{% block tittle %} Registrar Usuario {% endblock %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h4 class="center">Agregar Nuevo Usuario</h4>
+
+  <form class="form-group col-s12" method="POST">
+
+        
+          <div class="row">
+              {% csrf_token %}
+  
+              <div class="row">
+                  <div class="input-field center col l4 offset-l4 s12">
+                    <img class="circle" src="{% static 'img/User-Icon2.jpg' %}" alt="">
+                  </div>
+                  
+                  <div class="input-field col l4 offset-l4 s12" >
+                      
+                      {{ form.rol }}
+                    
+                  </div>
+                  
+                </div>
+  
+                <div class="row"  id="Cargos">
+                  
+                 
+                  <div class="input-field col l4 offset-l4 s12" >
+                      
+                      {{ form.cargo }}
+                    
+                  </div>
+                  
+                </div>
+  
+                <div class="row">
+                 
+                  <div class="input-field col s8">
+                    <i class="material-icons prefix">border_color</i>
+                    
+                    {{ form.rut }}
+                    <label>Rut</label>
+                    
+                    
+                  </div>
+                 
+                </div>
+  
+                <div class="row">
+                  <div class="input-field col s6">
+                    <i class="material-icons prefix">account_circle</i>
+                    <label>Nombres</label>
+                    {{ form.nombres }}
+                    
+                  </div>
+                  <div class="input-field col s6">
+                      <label>Apellidos</label>
+                      {{ form.apellidos }}
+                    
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col l12 s12">
+                    <i class="material-icons prefix">location_on</i>
+                    <label>Dirección</label>
+                    {{ form.direccion }}
+                    
+                  </div>
+                </div>
+  
+                <div class="row">
+                  
+                  <div class="input-field col l6 s12">
+                    <i class="material-icons prefix">phone_android</i>
+                    <label>Teléfono</label>
+                    {{ form.telefono }}
+                    
+                  </div>
+                </div>
+  
+                <div class="row">
+                  <div class="input-field col l12 s12">
+                      <i class="material-icons prefix">email</i>
+                      <label>Correo Electrónico</label>
+                      {{ form.correo }}
+                  </div>
+                     
+                     
+                    
+                </div>
+  
+                <div class="row">
+                  <div class="input-field col l6 s12">
+                      <i class="material-icons prefix">lock</i>
+                      <label>Contraseña</label>
+                      {{ form.password1}}
+                  </div>
+  
+                  <div class="input-field col l6 s12">
+                      <label>Repetir Contraseña</label>
+                      {{ form.password2 }}
+                  </div>
+                     
+                     
+                    
+                </div>
+  
+  
+                <div class="row">
+                  <div class="col s12 l12 center">
+                    <button class="btn-large waves-effect waves-light  blue lighten-1" type="submit" name="action">Agregar Usuario
+                      <i class="material-icons right">send</i>
+                    </button>
+                  </div>
+                </div>
+      
+          </div>
+         
+  
+  
+  
+      </div>
+  
+  
+       
+  
+      </form>>    
+      {% if messages %}
+          <ul class="messages">
+              {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+          </ul>    
+      {% endif %}
+  
+ 
+
+<script>
+  function Cambiar() {
+    debugger;
+    var valor = $('#id_rol').val();
+
+    if (valor == "1") {
+      $('#Cargos').hide()
+    }
+    else if (valor == "2") {
+      $('#Cargos').hide()
+    }
+    else {
+      $('#Cargos').show()
+    }
+  };
+</script>
+
+{% endblock %}

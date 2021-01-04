@@ -1,0 +1,112 @@
+{% extends 'menuPrincipal.html' %}
+
+{% load static %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+      Lista de Tareas de un  <span class="text-primary"> Proceso Tipo</span>
+    </h2>
+  </div>
+  <div class="row">
+    <p>Para ver el detalle de las tareas de un Proceso tipo, seleccione la empresa, su unidad y el proceso.</p>
+  </div>
+  <hr>
+
+  <form action="" method="POST">
+    {% csrf_token  %}
+    <div class="form-row align-items-center">
+
+      <!-- Selector de Empresas -->
+      <div class="col-sm my-1">
+        <label class="mr-sm-2" for="id_empresa">Empresa</label>
+        <select class="custom-select mr-sm-2" name="empresa" id="id_empresa" onchange="cambiarUnidad()">
+          <option selected>Seleccione Empresa...</option>
+          {% for e in empresas %}
+          <option value="{{ e.0 }}">{{ e.2 }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Selector de unidades -->
+      <div class="col-sm my-1">
+        <label class="mr-sm-2" for="unidadId">Unidad</label>
+        <select class="custom-select mr-sm-2" name="unidad" id="unidadId" onchange="unidadProceso()">
+          <option selected>Seleccione Unidad...</option>
+        </select>
+      </div>
+
+      <!-- Selector de Procesos -->
+      <div class="col-sm my-1">
+        <label class="mr-sm-2" for="id_proceso">Procesos</label>
+        <select class="custom-select mr-sm-2" name="id_proceso" id="id_proceso" onchange="procesotareas()">
+          <option selected>Seleccione Unidad...</option>
+        </select>
+      </div>
+
+      <!-- Carga la tabla con las tareas del proceso seleccionado -->
+      <div class="col-12 my-1">
+        <!-- Carga las tareas del proceso selecionado -->
+        <br>
+        <div class="h5 display-5 font-weight-bold text-secondary mt-lg-n2">
+          Detalle de las Tareas del Proceso
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped " name="tareasid" id="tareasid">
+            <!-- Carga de tareas -->
+          </table>
+        </div>
+      </div>
+
+
+    </div>
+  </form>
+
+</div>
+
+<script>
+  function cambiarUnidad() {
+
+    let empresaid = document.getElementById("id_empresa").value;
+    let url = "/ejecucion/unidades/?empresa_id=" + empresaid;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("unidadId").innerHTML = result;
+      });
+  }
+</script>
+
+<script>
+  function unidadProceso() {
+
+    let unidadid = document.getElementById("unidadId").value;
+    let url = "/ejecucion/procesos_tipo/?unidadId=" + unidadid;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("id_proceso").innerHTML = result;
+      });
+  }
+</script>
+
+<script>
+  function procesotareas() {
+    let procesoid = document.getElementById("id_proceso").value;
+    let url = "/ejecucion/procesos_tarea/?procesoid=" + procesoid;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("tareasid").innerHTML = result;
+      });
+  }
+</script>
+
+{% endblock %}

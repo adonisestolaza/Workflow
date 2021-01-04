@@ -1,0 +1,6 @@
+<option value="" selected disabled>Seleccione Comuna...</option>
+{% for i in region_comuna  %}
+ 
+<option value="{{ i.0 }}">{{ i.1 }}</option>
+
+{% endfor  %}

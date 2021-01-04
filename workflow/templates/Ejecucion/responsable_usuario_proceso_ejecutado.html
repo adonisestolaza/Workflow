@@ -1,0 +1,58 @@
+{% extends 'menuPrincipal.html' %}
+{% block content %}
+
+<div class="row">
+  <h3 onload="unidadProceso()"></h3>
+  <div name="id_unidad" id="id_unidad" data-value="{{ user.unidad_id }}"></div>
+
+  <div class="col-12">
+    <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+      Asignar <span class="text-primary"> Responsable</span>
+    </h2>
+    <p>Selecciones el Usuario Responsable de la lista</p>
+    <hr>
+  </div>
+
+  <form method="POST">
+    <div class="form-group">
+      {% csrf_token %}
+
+      <div class="col-sm my-1">
+        <label class="mr-sm-2" for="id_proceso">Responsable</label>
+        <br>
+        <h5 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+            ¿Desea Asignar la Tarea: <span class="text-primary"> {{ request.session.TareaNombre }}?</span>
+        </h5>
+        <br>
+        <select class="custom-select mr-sm-2" name="responsableid" id="responsableid">
+        </select>
+      </div>
+
+      <div class="container">
+        
+        <br>
+        <button type="submit" class="btn btn-success"> Asignar</button>
+
+        <a href="{% url 'ejecutar_proceso' %}" class="btn btn-danger">Cancelar</a>
+      </div>
+      
+    </div>
+  </form>
+</div>
+
+<script>
+  window.onload = function unidadProceso() {
+
+    var unidadid = document.getElementById('id_unidad').getAttribute('data-value');
+    let url = "/ejecucion/responsable/?unidad_id=" + unidadid;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("responsableid").innerHTML = result;
+      });
+  }
+</script>
+
+{% endblock %}

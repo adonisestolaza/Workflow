@@ -1,0 +1,53 @@
+
+
+
+<div class="row row-cols-1 row-cols-md-4">
+
+    {% for t in historial_usuario %}
+    <!-- Cards con las tareas del usuario -->
+    <div class="col mb-4">
+
+        {% if t.11 == 1 %}
+        <div class="card border-success h-100 ">
+            <div class="card-header bg-success border-success text-white"><i class="fas fa-clock"></i> En Tiempo
+                - <i class="fas fa-hourglass-half"></i> Días {{ t.9 }} Utilizados</div>
+            <div class="card-body text-dark">
+                
+                {% elif t.11 == 2 %}
+                <div class="card border-warning h-100 ">
+                    <div class="card-header bg-warning border-warning text-black-50"><i class="fas fa-exclamation-circle"></i> Atención - <i class="fas fa-hourglass-half"></i> Días {{ t.9 }} Utilizados
+                    </div>
+                    <div class="card-body">
+                        {% else %}
+                        <div class="card border-danger h-100 ">
+                            <div class="card-header bg-danger border-danger text-white">Atrasada - <i class="fas fa-exclamation-triangle"></i> Días {{ t.9 }} Utilizados</div>
+                            <div class="card-body">
+                                {% endif %}
+                                <h5 class="card-title text-dark text-capitalize font-weight-bolder">{{ t.2 }} -
+                                    {{ t.5 }}</h5>
+                                <!-- Barra de progreso -->
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: {{ t.7 }}%;"  aria-valuenow="{{ t.7 }}"
+                                        aria-valuemin="0" aria-valuemax="100">{{ t.7 }}%</div>
+                                </div>
+                                <hr>
+                                <p class="card-text text-capitalize">
+                                    <b>ID {{ t.1 }}</b> - {{ t.2 }}.
+                                    <br>
+                                    <b>Duración:</b> {{ t.8 }} días.
+                                    <br>
+                                    <b> Asignado:</b> {{ t.3 }} {{ t.4 }}
+                                    <br>
+                                    <b>Terminada:</b> {{ t.12 }}
+                                </p>
+                                <a href="{% url 'detalle_tarea' t.1 %}" class="btn btn-secondary btn-sm"><i
+                                        class="fas fa-bars"></i> Más Detalles</a>
+                            </div>
+
+                            {% if t.10 == 1 %}
+                            <div class="card-footer bg-body border-body"><i class="fas fa-user"></i> <b>Responsable</b> {{ t.3 }} {{ t.4 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>

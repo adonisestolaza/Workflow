@@ -1,0 +1,92 @@
+{% extends 'menuPrincipal.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <h3 onload="unidadProceso()"></h3>
+
+  </div>
+  <h2 class="display-5 font-weight-bold text-secondary  mt-lg-n2">
+    Lista de Procesos Tipo <span class="text-primary"> Activos</span>
+  </h2>
+  <p>Seleccione el proceso de la lista para ver su detalle de tareas y asignar su responsable</p>
+
+  <form action="" method="POST">
+    {% csrf_token  %}
+    <div class="form-row align-items-center">
+
+      <!-- Selector de Empresas -->
+
+      <!-- Selector de unidades -->
+      <div name="id_unidad" id="id_unidad" data-value="{{ user.unidad_id }}"></div>
+
+
+
+      <!-- Selector de Procesos -->
+      <div class="">
+        <div class="col-sm col-6 my-1">
+          <label class="mr-sm-2" for="id_proceso">Listado de Procesos Activos</label>
+          <select class="custom-select mr-sm-2" name="id_proceso" id="id_proceso" onchange="procesotareas()">
+            <option selected>Seleccione Proceso...</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Selector de Fecha de Ejecución -->
+
+      <!-- Carga la tabla con las tareas del proceso seleccionado -->
+      <div class="col-12 my-1">
+        <!-- Carga las tareas del proceso selecionado -->
+        <br>
+        <div class="h5 display-5 font-weight-bold text-secondary  mt-lg-n2">Detalle de las Tareas</div>
+
+        <div class="table-responsive">
+          <table class="table table-striped table-sm" name="tareasid" id="tareasid">
+            <!-- Carga de tareas -->
+          </table>
+        </div>
+      </div>
+
+      <!-- Boton ejecutar proceso -->
+      <div class="col-auto my-1">
+      </div>
+    </div>
+  </form>
+  <td><a href="{% url 'ejecutar_proceso' %}" class="btn btn-primary"> Volver <i
+        class='fas fa-arrow-alt-circle-left'></i></a></td>
+</div>
+
+
+<script>
+  window.onload = function unidadProceso() {
+
+    var unidadid = document.getElementById('id_unidad').getAttribute('data-value');
+    let url = "/ejecucion/procesos_ejecutados/?unidadid=" + unidadid;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("id_proceso").innerHTML = result;
+      });
+  }
+</script>
+
+<script>
+  function procesotareas() {
+    let procesoid = document.getElementById("id_proceso").value;
+    let url = "/ejecucion/listar_tareas/?id_proceso=" + procesoid;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("tareasid").innerHTML = result;
+      });
+  }
+</script>
+
+
+{% endblock %}

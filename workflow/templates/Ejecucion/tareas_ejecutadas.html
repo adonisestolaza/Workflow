@@ -1,0 +1,95 @@
+{% extends 'menuPrincipal.html' %}
+
+{% load static %}
+{% block content %}
+
+<!-- Form terminar tarea -->
+<div class="container">
+    <div class="row">
+        <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+            Flujo de <span class="text-primary"> Tareas</span>
+        </h2>
+
+    </div>
+
+    <div class="row">
+        <p>Listado de tareas ejecutadas.</p>
+    </div>
+
+    <!-- Tabla que carga las tareas del usuario -->
+    <div class="row">
+        <div>
+            <div class="row row-cols-2 row-cols-md-4">
+
+                {% for t in tareas_ejecutadas_jefe %}
+                <!-- Cards con las tareas del usuario -->
+                <div class="col mb-4">
+
+                    {% if t.5 == 1 %}
+                    <div class="card border-success h-100 ">
+                        <div class="card-header bg-success border-success text-white"><i class="fas fa-clock"></i> En
+                            Tiempo
+                            - <i class="fas fa-hourglass-half"></i> Duración {{ t.3 }} Días</div>
+                        <div class="card-body text-dark">
+
+                            {% elif t.5 == 2 %}
+                            <div class="card border-warning h-100 ">
+                                <div class="card-header bg-warning border-warning text-black-50"><i
+                                        class="fas fa-exclamation-circle"></i> Atención - <i
+                                        class="fas fa-hourglass-half"></i> Duración {{ t.3 }} Días
+                                </div>
+                                <div class="card-body">
+                                    {% else %}
+                                    <div class="card border-danger h-100 ">
+                                        <div class="card-header bg-danger border-danger text-white">Atrasada - <i
+                                                class="fas fa-exclamation-triangle"></i> Duración {{ t.3 }} Días</div>
+                                        <div class="card-body">
+                                            {% endif %}
+                                            <h5 class="card-title text-dark text-capitalize font-weight-bolder">
+                                                {{ t.0 }} -
+                                                {{ t.1 }}</h5>
+                                            <!-- Barra de progreso -->
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" style="width: {{ t.2 }}%;"
+                                                    aria-valuenow="{{ t.2 }}" aria-valuemin="0" aria-valuemax="100">
+                                                    {{ t.2 }}%</div>
+                                            </div>
+                                            <hr>
+                                            <p class="card-text text-capitalize">
+                                                <b>ID {{ t.0 }}</b> - {{ t.1 }}.
+                                                <br>
+                                                <b> Asignado:</b> {{ t.6 }}
+                                                <br>
+                                                <b>Vence:</b> {{ t.7 }}
+                                            </p>
+                                            <a href="{% url 'detalle_tarea' t.0 %}" class="btn btn-secondary btn-sm"><i
+                                                    class="fas fa-bars"></i> Más Detalles</a>
+                                        
+                                        {% if t.4 == 1   %}
+                                        <button type="button" class="btn btn-primary btn-sm">En curso</button>
+                                        {% elif t.4 == 2   %}
+                                        <td><button type="button" class="btn btn-success btn-sm">Terminada</button></td>
+                                        {% else %}
+                                        <td><button type="button" class="btn btn-danger btn-sm">Detenida</button></td>
+                                        {% endif %}
+                                    </div>
+                                        {% if t.8 == null %}
+                                        <div class="card-footer bg-body border-body"><i class="fas fa-user"></i>
+                                            <b>Responsable: </b>Sin responsable</div>
+                                        {% else %}
+                                        <div class="card-footer bg-body border-body"><i class="fas fa-user"></i>
+                                            <b>Responsable: </b>{{ t.8 }} {{ t.9 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Scripts select anidados -->
+        {% endblock %}

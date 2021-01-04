@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <title>Reporte Procesos</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 2px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        @page title_template {
+            margin: 2cm;
+        }
+
+        @page regular_template {
+            margin: 1cm;
+        }
+    </style>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/workflow.css' %}" rel="stylesheet">
+
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+        integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div> <img src="{% static 'img/process.png' %}" alt="image" width="200" height="50">
+    </div>
+    <h1 style="text-align: center;" class="text-wf">Reporte {{ procesos_ejecutados.0.1 }}</h1>
+    <h2 style="text-align: left;" >Generado por: <span class="text-wf"> {{ nombre }} {{ apellido }}</span></h2>
+    <h2 style="text-align: left;" >Fecha:<span class="text-wf"> {{ fecha }}</span></h2>
+
+    <div class="row">
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Porcentaje efectividad: {{ porcentaje_efectividad }}%</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clock fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Tiempo ahorrado mes: {{ porcentaje_ahorrado }}%</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-double fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Cantidad de tareas en Espera -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Probabilidad ejecucion: {{ probabilidad_ejecucion }}%</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-hand-paper fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Total de ejecuciones: {{ cant_procesos.0.0 }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <h2 class="text-wf"> 1- Procesos terminados</h2>
+    <table border="1" class="table table-striped table-sm">
+        <thead class="bg-dark text-white text-center">
+            <tr>
+                <td>ID</td>
+                <td>Proceso</td>
+                <td>Fecha ejecucion</td>
+                <td>Fecha termino</td>
+                <td>Tareas atrasadas</td>
+                <td>Porcentaje Tiempo Utilizado</td>
+            </tr>
+        </thead>
+
+        <tbody id="tabla">
+            {% for i in procesos_ejecutados %}
+            <tr>
+                <td>{{ i.0 }}</td>
+                <td>{{ i.1 }}</td>
+                <td>{{ i.3 | date:"d/m/Y" }}</td>
+                <td>{{ i.4 | date:"d/m/Y" }}</td>
+                <td>{{ i.5 }}</td>
+                <td>{{ i.6 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+
+    <h2 class="text-wf">2- Diferencia Dias proceso</h2>
+    <table border="1" style="border-collapse: collapse;">
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Nombre</td>
+                <td>Fecha</td>
+                <td>Dias utilizados</td>
+                <td>Dias estimados</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for i in diferencia_proceso %}
+            <tr>
+                <td>{{ i.4 }}</td>
+                <td>{{ i.2 }}</td>
+                <td>{{ i.3 }}</td>
+                <td>{{ i.0 }}</td>
+                <td>{{ i.1 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <h2 class="text-wf">3- Promedio Dias tareas</h2>
+    <table border="1" style="border-collapse: collapse;">
+        <thead>
+            <tr>
+                <td>Tarea</td>
+                <td>Dias estimados</td>
+                <td>Promedio utilizado</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for i in promedio_tareas %}
+            <tr>
+                <td>{{ i.0 }}</td>
+                <td>{{ i.1 }}</td>
+                <td>{{ i.2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+</html>

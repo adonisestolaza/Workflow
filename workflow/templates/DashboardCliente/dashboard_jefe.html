@@ -1,0 +1,385 @@
+{% extends 'menuPrincipal.html' %} {% block content %}
+
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h3 class="display-5 font-weight-bold text-dark mt-lg-n2">Dashboard - Unidad
+            {{ request.session.UnidadUsuario }} <span class="text-primary">{{ request.session.EmpresaUsuario }}</span>
+        </h3>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm bg-orange shadow-sm text-white"><i
+                class="fas fa-download fa-sm text-white-50"></i> Generar Reporte</a>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Tareas en Curso (Activas)</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cantidad_tareasEstado.0.1 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clock fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Tareas Terminadas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cantidad_tareasEstado.1.1 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-double fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Cantidad de tareas en Espera -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Tareas detenidas o en Espera</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cantidad_tareasEstado.2.1 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-hand-paper fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Cantidad total de Tareas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cantidad_tareas.0.0 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Content Column -->
+        <div class="col-sm-12">
+
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4 text-capitalize">
+                <div class="card-header py-3 bg-wf">
+                    <h6 class="m-0 font-weight-bold text-white">Mis Flujos Activos - Avances</h6>
+                </div>
+                <div class="card-body">
+                    {% for p in procesos_ejecutados %}
+                    <a href="{% url 'tareas_ejecutadas_jefe' p.0 %}">
+                        <h3 class="small font-weight-bold">ID {{ p.0 }} - {{ p.1 }} - {{ p.2 }}
+                            <span class="text-secondary"><i class="fas fa-clock fa-sm fa-fw"></i> Fecha término
+                                estimada: {{ p.5 | date:"d/m/Y"  }}</span> <span class="float-right">{{ p.7 }}%</span>
+                        </h3>
+                        {% if p.6 > 0 %}
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
+                                role="progressbar" style="width: {{ p.7 }}%" aria-valuenow="{{ p.7 }}" aria-valuemin="0"
+                                aria-valuemax="100"></div>
+                        </div>
+                    </a>
+                    {% else %}
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                            role="progressbar" style="width: {{ p.7 }}%" aria-valuenow="{{ p.7 }}" aria-valuemin="0"
+                            aria-valuemax="100"></div>
+                    </div>
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- Area Chart -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-wf">
+                    <h6 class="m-0 font-weight-bold text-white">Top Funcionarios Tareas Terminadas</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="TareasTrabajadoresUnidad"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4 ">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header bg-wf py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-white">Estadísticas de la Unidad -
+                        {{ request.session.UnidadUsuario }} </h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="EstadisticaUnidadChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-primary"></i> Activos
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> Terminados
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-danger"></i> Detenidas
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- Content Column -->
+        <div class="col-lg-6 mb-4">
+
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-wf">
+                    <h6 class="m-0 font-weight-bold text-white">Tareas no asignadas en Flujos Activos</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row row-cols-1 row-cols-md-2">
+                        {% for p in tareas_sin_asignar %}
+                        
+                        <div class="col mb-4">
+                            <div class="card border-warning mb-3" >
+                                <a href="{% url 'asignar_responsable' p.4 %}">
+                                <div class="card-header bg-warning text-dark">{{ p.2 }} - {{ p.3 }}</div></a>
+                                <div class="card-body">
+                                  <h5 class="card-title text-dark">Tarea <span class="text-wf">{{ p.0 }}</span></h5>
+                                  <p class="card-text text-dark">comienza el {{p.1 | date:"d/m/Y"}}</p>
+                                </div>
+                              </div>
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-lg-6 mb-4">
+
+            <!-- Approach -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-wf">
+                    <h6 class="m-0 font-weight-bold text-white">Mensajes recientes de tareas designadas</h6>
+                </div>
+                <div class="card-body">
+
+                    <!-- Lista de comentarios -->
+
+                    {% for m in mensajes %}
+                    <div class="card bg-light text-secondary text-capitalize small mb-2">
+                        <div class="card-body">
+                            <h6 class="card-title font-weight-bold text-primary">Tarea ID{{ m.3}} - <span
+                                    class="text-dark">
+                                    {{ m.1 }}</span><span class="text-secondary float-right"
+                                    style="font-size: 12px;">{{ m.5 }}</span></h6>
+
+                            <p class="card-text"><i class="fas fa-comment text-secondary"></i> {{ m.2 }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+
+
+<!-- End of Main Content -->
+
+<script>
+    // Pie Chart Example
+    var ctx = document.getElementById("EstadisticaUnidadChart");
+    var EstadisticaUnidadChart = new Chart(ctx, {
+        type: 'polarArea',
+        data: {
+            labels: ["Activos", "Terminados", "Detenidas"],
+            datasets: [{
+
+                data: [{{ cantidad_tareasEstado.0.1 }}, {{ cantidad_tareasEstado.1.1 }}, {{ cantidad_tareasEstado.2.1 }}],
+    backgroundColor: ['#42a5f5', '#1cc88a', '#e74a3b'],
+        hoverBackgroundColor: ['#2e59d9', '#17a673', '#ff1212'],
+            hoverBorderColor: "rgba(234, 236, 244, 1)",
+            }],
+        },
+    options: {
+        maintainAspectRatio: false,
+            tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                        borderWidth: 1,
+                            xPadding: 15,
+                                yPadding: 15,
+                                    displayColors: false,
+                                        caretPadding: 10,
+            },
+        legend: {
+            display: false
+        },
+        cutoutPercentage: 80,
+        },
+    });
+</script>
+
+
+
+<script>
+    // Gráfico de las TAREAS Funcionarios
+    var ctx = document.getElementById("TareasTrabajadoresUnidad");
+    var EstadisticaUnidadChart = new Chart(ctx, {
+        type: 'horizontalBar',
+
+        data: {
+            labels: [{% for fr in funcionarios_top_tareas %} "{{ fr.1 }}", {% endfor %}],
+    datasets: [{
+        barPercentage: 0.5,
+        categoryPercentage: 0.8,
+        data: [{% for fr in funcionarios_top_tareas %} {{ fr.0 }}, {% endfor %}, 0],
+        backgroundColor: ['#42a5f5', '#1cc88a', '#e74a3b','#0215de','#f5ed02'],
+
+        }],
+        },
+    options: {
+        maintainAspectRatio: false,
+            tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                        borderWidth: 1,
+                            xPadding: 15,
+                                yPadding: 15,
+                                    displayColors: false,
+                                        caretPadding: 10,
+            },
+        legend: {
+            display: false
+        },
+        cutoutPercentage: 80,
+        },
+    });
+</script>
+
+<script>
+    // Gráfico de las TAREAS Funcionarios
+    var ctx = document.getElementById("TareasTrabajadoresUnidad1");
+    var EstadisticaUnidadChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for fr in funcionario_responsables %} "{{ fr.1 }}", {% endfor %}],
+    datasets: [{
+        data: [{% for fr in funcionario_responsables %} {{ fr.0 }}, {% endfor %}],
+        backgroundColor: ['#42a5f5', '#1cc88a', '#e74a3b','#0215de','#f5ed02'],
+            hoverBackgroundColor: ['#2e59d9', '#17a673', '#ff1212','#0215de','#f5ed02'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+            }],
+        },
+    options: {
+        maintainAspectRatio: false,
+            tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                        borderWidth: 1,
+                            xPadding: 15,
+                                yPadding: 15,
+                                    displayColors: false,
+                                        caretPadding: 10,
+            },
+        legend: {
+            display: false
+        },
+        cutoutPercentage: 80,
+        },
+    });
+</script>
+{% endblock %}

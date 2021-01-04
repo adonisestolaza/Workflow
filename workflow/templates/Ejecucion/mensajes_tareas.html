@@ -1,0 +1,72 @@
+{% extends 'menuPrincipal.html' %}
+
+{% load static %}
+{% block content %}
+
+<!-- Form terminar tarea -->
+<div class="container">
+  <div class="row">
+    <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+       Archivo Inbox  <span class="text-primary"> Tarea</span>
+    </h2>
+
+  </div>
+
+  <div class="row">
+    <p>Listado mensajes en la tareas.</p>
+  </div>
+
+  <!-- Tabla que carga las tareas del usuario -->
+  <div class="row">
+    <table class="table table-striped"> 
+    <thead class="bg-wf text-white text-center">
+        <tr>
+          <th>Asunto</th>
+          <th>Mensaje</th>
+          <th>Usuario</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      {% if not mensaje   %}
+          <h5 class="text-center">Esta tarea no tiene mensajes</h5>
+      
+      {{ break }}
+      {% else  %}
+      
+      {% for m in mensaje %}
+      <tr>
+
+        <td>{{ m.2 }}</td>
+        <td>{{ m.3 }}</td>
+        <td>{{ m.4 }}</td>
+        <td>{{ m.5 }}</td>
+      </tr>
+      
+      {% endfor %}
+      {% endif %}
+      </table>
+      {% if user.rol_id == 4 %}
+      <td><a href="{% url 'lista_procesos_jefe'%}" class="btn btn-primary btn-sm">Volver Dashboard</a></td>
+      {% else %}
+      <td><a href="{% url 'tareas' %}" class="btn btn-primary btn-sm">Volver</a></td>
+      {% endif %}
+
+  </div>
+  
+  <div class="row">
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li>
+        <div class="alert alert-success">{{ message }}</div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+
+</div>
+
+
+<!-- Scripts select anidados -->
+{% endblock %}

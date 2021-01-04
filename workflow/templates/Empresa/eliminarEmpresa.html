@@ -1,0 +1,35 @@
+{% extends 'menuPrincipal.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="col-12  text-center">
+                    
+                    
+        <h2 class="display-4 font-weight-bold text-secondary  mt-lg-n2">
+        Deshabilitar <span class="text-primary"> Empresa</span>
+        </h2>
+        <br>
+        <hr>
+     </div>
+     <div class="alert alert-danger text-center" role="alert">
+        ¡Va a deshabilitar una empresa de workflow!
+    </div>  
+    
+    <div >
+         <div class="item offset-3 col-md-6 text-center">
+
+            <form method="POST">
+                <div class="form-group">
+                    {% csrf_token %}
+                <h2>¿Desea Deshabilitar {{ empresa.nombre }} ?</h2>   
+                           <br>
+                <button type="submit" class="btn btn-primary"> Eliminar</button>
+                <a href="{% url 'lista_empresa' %}" class="btn btn-danger">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

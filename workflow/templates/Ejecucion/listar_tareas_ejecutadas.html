@@ -1,0 +1,33 @@
+<thead class="bg-wf text-white text-center">
+  <tr>
+    <th>Nombre</th>
+    <th>Descripción</th>
+    <th>Duración</th>
+    <th>Orden</th>
+    <th>Fecha Inicio</th>
+    <th>Fecha Termino</th>
+    <th>Responsable</th>
+    <th>Asignar Responsable</th>
+  </tr>
+</thead>
+
+{% for t in lista_tareas %}
+<tr>
+  <td>{{ t.1 }}</td>
+  <td>{{ t.2 }}</td>
+  <td>{{ t.3 }}</td>
+  <td>{{ t.4 }}</td>
+  <td>{{ t.5 |date:"d-m-Y" }}</td>
+  <td>{{ t.6 |date:"d-m-Y" }}</td>
+  {% if t.7 == null   %}
+  <td>Sin Responsable</td>
+  {% else %}
+  <td>{{ t.7 }} {{ t.8 }}</td>
+  {% endif %}
+
+  <td class="text-center"><a href="{% url 'asignar_responsable' t.0 %}" class="btn btn-success btn-sm"><i class="fas fa-user-plus"></i></a>
+  </td>
+</tr>
+
+{% endfor %}
+</table>

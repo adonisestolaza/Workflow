@@ -1,0 +1,250 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+  <title>Workflow</title>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/data.js"></script>
+  <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="{% static 'css/style_wf.css' %}" type="text/css" rel="stylesheet" media="screen,projection" />
+</head>
+
+<header>
+  <!-- Menú principal  -->
+  <nav>
+    <div class="nav-wrapper blue lighten-1 ">
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#"><i class="material-icons">search</i></a></li>
+        <li><a href="#"><i class="material-icons">view_module</i></a></li>
+        <li><a href="#"><i class="material-icons">more_vert</i></a></li>
+      </ul>
+    </div>
+  </nav>
+
+<!-- Menú Lateral -->
+
+<ul id="slide-out" class="sidenav sidenav-fixed">
+  <li>
+    <div class="user-view blue-grey darken-4">
+        <a href="dashboard.html"><img src="{% static 'img/Process_s.png' %}" alt=""></a>
+        <a href="#user"><img class="circle" src="{% static 'img/User-Icon2.jpg' %}"></a>
+      
+      <a href="#email"><span class="white-text email">{{ user.correo }}</span></a>
+      <a href="#email"><span class="white-text email">{{ user.nombres }} {{ user.apellidos }}</span></a>
+     
+    </div>
+  </li>
+
+{% if user.rol_id == 1 %} 
+  <li><a class="waves-effect blue-text text-lighten-1"><i class="material-icons"></i>Administrador</a></li>
+{% endif %}
+
+{% if user.rol_id == 2 %} 
+    <li><a class="waves-effect blue-text text-lighten-1"><i class="material-icons"></i>Diseñador</a></li>
+{% endif %}
+
+{% if user.rol_id == 3 %} 
+  <li><a class="waves-effect blue-text text-lighten-1"><i class="material-icons"></i>Gerente</a></li>
+{% endif %}
+
+{% if user.rol_id == 4 %} 
+  <li><a class="waves-effect blue-text text-lighten-1"><i class="material-icons"></i>Jefe</a></li>
+{% endif %}
+
+{% if user.rol_id == 5 %}   
+  <li><a class="waves-effect blue-text text-lighten-1"><i class="material-icons"></i>Funcionario</a></li>
+{% endif %}
+
+  
+
+  
+
+
+  
+  <li>
+    <div class="divider"></div>
+  </li>
+
+  <li class="no-padding">
+    <ul class="collapsible collapsible-accordion">
+      <li>
+        <a class="collapsible-header">Gestión de Usuarios<i class="material-icons">arrow_drop_down</i></a>
+        <div class="collapsible-body">
+          <ul>
+            <li><a class="waves-effect" href="{% url 'registrarse' %}"><i class="material-icons">add</i>Agregar</a></li>
+            <li><a class="waves-effect" href="{% url 'lista_usuarios' %}"><i class="material-icons">dehaze</i>Listar</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a class="collapsible-header">Gestión de Empresas<i class="material-icons">arrow_drop_down</i></a>
+        <div class="collapsible-body">
+          <ul>
+            <li><a class="waves-effect" href="{% url 'empresa' %}"><i class="material-icons">add</i>Agregar</a></li>
+            <li><a class="waves-effect" href="{% url 'lista_empresa' %}"><i class="material-icons">dehaze</i>Listar</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a class="collapsible-header">Gestión de Unidades<i class="material-icons">arrow_drop_down</i></a>
+        <div class="collapsible-body">
+          <ul>
+            <li><a class="waves-effect" href="{% url 'unidad' %}"><i class="material-icons">add</i>Agregar</a></li>
+            <li><a class="waves-effect" href="{% url 'lista_unidad' %}"><i class="material-icons">dehaze</i>Listar</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a class="collapsible-header">Procesos Tipo<i class="material-icons">arrow_drop_down</i></a>
+        <div class="collapsible-body">
+          <ul>
+            <li><a class="waves-effect" href="{% url 'proceso' %}"><i class="material-icons">add</i>Crear Proceso</a></li>           
+            <li><a class="waves-effect" href=""><i class="material-icons">dehaze</i>Listar Procesos</a></li>
+            <li><a class="waves-effect" href="{% url 'tarea' %}"><i class="material-icons">add</i>Crear Tarea</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a class="collapsible-header">Dashboard Clientes<i class="material-icons">arrow_drop_down</i></a>
+        <div class="collapsible-body">
+          <ul>         
+            <li><a class="waves-effect" href="{% url 'lista_procesos'%}"><i class="material-icons">dehaze</i>Listar Procesos</a></li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <a class="collapsible-header">Ejecutar Proceso<i class="material-icons">arrow_drop_down</i></a>
+        <div class="collapsible-body">
+          <ul>         
+            <li><a class="waves-effect" href="{% url 'ejecutar_proceso' %}"><i class="material-icons">dehaze</i>Ejecutar Proceso</a></li>
+          </ul>
+        </div>
+      </li>
+
+    </ul>
+    
+  </li>
+</ul>
+</header>
+
+</header>
+
+<main>
+
+  <body>
+
+      {% block content %}
+      
+      {% endblock %}
+
+
+
+  </body>
+
+</main>
+<!-- Footer -->
+<footer class="page-footer blue">
+  <div class="container">
+    <div class="row">
+      <div class="col l6 s12">
+
+        <div class="left">
+          Desarrollado por <a class="blue-text text-lighten-3" href="http://www.workflow.cl">Workflow</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!--  Scripts-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="{% static 'js/materialize.js' %}"></script>
+<script src="{% static 'js/init.js' %}"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
+  });
+
+  // Initialize collapsible (uncomment the lines below if you use the dropdown variation)
+  var collapsibleElem = document.querySelector('.collapsible');
+  var collapsibleInstance = M.Collapsible.init(collapsibleElem);
+</script>
+
+
+
+
+<script>
+  $('.dropdown-trigger').dropdown();
+</script>
+
+<script>
+  /* Activar los Select - option */
+  document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems);
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $('select').formSelect();
+  });
+
+  $(document).ready(function () {
+    $('.modal').modal();
+  });
+</script>
+
+<script>
+  var date = new Date();
+  var year = date.getFullYear();
+  var month = date.getMonth();
+  var day = date.getDate();
+  var date = new Date(year, month, day);
+
+  $('.datepicker').datepicker({
+    autoClose: true,
+    format: 'yyyy-mm-dd',
+    defaultDate: date,
+    setDefaultDate: true
+  });
+</script>
+
+<!-- Menus laterales colapsables-->
+<script>
+  $(document).ready(function () {
+    $('.collapsible').collapsible();
+  });
+  
+  </script>
+
+
+<script>
+  $(document).ready(function () {
+    $('.fixed-action-btn').floatingActionButton();
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('select');
+  var instances = M.FormSelect.init(elems);
+});
+</script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+{% extends 'menuPrincipal.html' %}
+{% block content %}
+<div class="container">
+
+  <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+    Agregar Nueva <span class="text-primary">Unidad</span>
+  </h2>  <!-- Formulario de ingreso -->
+  <p>Para agregar una nueva unidad debes completar el siguiente Formulario</p>
+
+  <div class="from-group">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>
+            <div class="alert alert-success">{{ message }}</div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+</div>
+  <form method="POST">
+    {% csrf_token  %}
+
+    <div class="form-group">
+      <label for="empresa">Seleccione Empresa</label>
+      <select class="form-control" name="empresa" id="empresa">
+        {% for e in empresas %}
+        <option value="{{ e.0 }}">{{ e.2 }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" class="form-control" name="nombre">
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Descripción</label>
+      <input id="descripcion" type="text" class="form-control"  name="descripcion">
+    </div>
+
+    <button class="btn btn-success" type="submit" name="action">Agregar Unidad</button>
+
+  </form>
+</div>
+{% endblock %}

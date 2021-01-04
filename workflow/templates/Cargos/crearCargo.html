@@ -1,0 +1,78 @@
+{% extends 'menuPrincipal.html' %}
+{% block content %}
+<div class="container">
+
+  <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+    Agregar Nuevo <span class="text-primary">Cargo</span>
+  </h2>  <!-- Formulario de ingreso -->
+  <p>Para agregar un nuevo cargo debes completar el siguiente Formulario</p>
+
+  <div class="from-group">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>
+            <div class="alert alert-success">{{ message }}</div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+</div>
+  <form method="POST">
+    {% csrf_token  %}
+
+    <div class="form-row">
+      <div class="col-4">
+        
+        <div class="form-group">
+          <label for="empresa">Empresa</label>
+          <select name="empresa" class="form-control" id="empresa" required onchange="cambiarUnidad()" >
+            {% for e in empresas %}
+            <option value="{{ e.0 }}">{{ e.2 }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="form-group">
+          <label class="mr-sm-2" for="unidad">Unidad</label>
+        <select class="custom-select mr-sm-2" name="unidad" id="unidad" >
+          <option selected>Seleccione Unidad...</option>
+        </select> 
+          </select>
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" class="form-control" name="nombre">
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Descripción</label>
+      <input id="descripcion" type="text" class="form-control"  name="descripcion">
+    </div>
+
+    <button class="btn btn-success" type="submit" name="action">Agregar Cargo</button>
+
+  </form>
+</div>
+<script>
+  function cambiarUnidad() {
+
+    let empresaid = document.getElementById("empresa").value;
+    let url = "/ejecucion/unidades/?empresa_id=" + empresaid;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("unidad").innerHTML = result;
+      });
+  }
+</script>
+{% endblock %}

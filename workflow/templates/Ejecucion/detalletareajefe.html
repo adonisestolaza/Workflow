@@ -1,0 +1,131 @@
+{% extends 'menuPrincipal.html' %}
+{% block content %}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-12">
+            <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+                Detalle <span class="text-primary"> Tarea</span>
+            </h2>
+            <p></p>
+            <hr>
+        </div>
+    </div>
+
+    {% if tarea.0.9 == 1 %}
+    <div class="card border-success h-100 ">
+        <div class="card-header bg-success border-success text-white"><i class="fas fa-clock"></i> En Tiempo
+            - <i class="fas fa-hourglass-half"></i> Quedan {{ tarea.0.15  }} Días
+        </div>
+
+        {% elif tarea.0.9 == 2 %}
+        <div class="card border-warning h-100 ">
+            <div class="card-header bg-warning border-warning text-black-50"><i class="fas fa-exclamation-circle"></i>
+                Atención - <i class="fas fa-hourglass-half"></i> Quedan {{ tarea.0.15  }} Días
+            </div>
+            {% else %}
+            <div class="card border-danger h-100 ">
+                <div class="card-header bg-danger border-danger text-white">Atrasada - <i
+                        class="fas fa-exclamation-triangle"></i> Quedan {{ tarea.0.15 }} Días
+                </div>
+
+                {% endif %}
+
+                <div class="card-body text-capitalize">
+                    <h5 class="card-title ">{{ tarea.0.0 }} - {{ tarea.0.3 }}
+                    </h5>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                            aria-valuenow="{{ tarea.0.5 }}" aria-valuemin="0" aria-valuemax="100"
+                            style="width: {{ tarea.0.5 }}%">{{ tarea.0.5 }}%
+                        </div>
+                    </div>
+                    <br>
+                    <p class="card-text"><b>Detalle de la tarea:</b> {{ tarea.0.4 }}</p>
+                    <hr>
+                    <p class="card-text text-capitalize">
+                        <b>ID {{ tarea.0.0 }}</b> - {{ tarea.0.3 }}.
+                        <br>
+                        <b>ID {{ tarea.0.1 }}</b> - {{ tarea.0.2 }}.
+                        <br>
+                        <b>Duración:</b> {{ tarea.0.6 }} días.
+                        <br>
+                        <b>Orden:</b> {{ tarea.0.8 }}.
+                        <br>
+                        <b>Asignado:</b> {{ tarea.0.10 }}
+                        <br>
+                        <b>Vence:</b> {{ tarea.0.11  }}
+                        <br>
+                        <b>Responsable:</b> ID {{ tarea.0.12 }} - {{ tarea.0.13 }}
+                        <br>
+                        <b>Cargo:</b> {{ tarea.0.14 }}
+                    </p>
+                </div>
+
+                <div class="card-footer text-muted">
+                    <form method="POST">
+                        <div class="form-group">
+                            {% csrf_token %}
+                            <button type="submit" name="action" value="tareaterminada"
+                                class="btn btn-danger float-right"><i class="fas fa-check-double"></i> Terminar
+                                Tarea</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br>
+
+            <!-- dejar mensaje -->
+            <!-- Mensaje de la tarea terminada -->
+            <div class="row">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li>
+                        <div class="alert alert-success">{{ message }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <h4 class="h4"> Mensajes</h4>
+            <p>Para dejar un mensaje puede utilizar el siguiente formulario</p>
+
+            <form method="POST">
+                {% csrf_token  %}
+
+                <div class="form-group">
+                    <label for="asunto">Asunto</label>
+                    <input id="asunto" type="text" class="form-control" name="asunto">
+                </div>
+
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="idmensaje">Mensaje</label>
+                        <textarea class="form-control" id="idmensaje" name="idmensaje" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <button class="btn btn-success " type="submit" name="action" value="mensaje"><i
+                        class="fas fa-comment"></i> Enviar</button>
+            </form>
+            <br>
+
+            <!-- Lista de comentarios -->
+
+            {% for m in mensajes %}
+            <div class="card text-capitalize">
+                <div class="card-body">
+                    <h6 class="card-title font-weight-bold text-primary">{{ m.4}} - <span class="text-secondary">
+                            {{ m.2 }}</span></h6>
+                    <p class="text-secondary" style="font-size: 12px;">{{ m.5 }}</p>
+                    <p class="card-text">{{ m.3 }}</p>
+                </div>
+            </div>
+            <br>
+            {% endfor %}
+
+        </div>
+
+        {% endblock %}

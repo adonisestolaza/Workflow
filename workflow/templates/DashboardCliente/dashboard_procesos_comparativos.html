@@ -1,0 +1,315 @@
+{% extends 'menuPrincipal.html' %}
+{% block content %}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard <span class="text-primary">{{procesos_tareas.0.0}}</span> </h1>
+    <a href="{% url 'reporte_process' promedio_tareas.0.3 %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        class="fas fa-download fa-sm text-white-50"></i> Generar Reporte</a>
+  </div>
+
+  <!-- Content Row -->
+  <div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                % porcentaje éxito ejecución</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ porcentaje_efectividad }}%</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-trophy fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                % Tiempo ahorrado mes </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ porcentaje_ahorrado }}%</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-clock fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-info shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-info text-uppercase mb-1"> % Probabilidad ejecución
+              </div>
+              <div class="row no-gutters align-items-center">
+                <div class="col-auto">
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ probabilidad_ejecucion }}%</div>
+                </div>
+                <div class="col">
+                  <div class="progress progress-sm mr-2">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="{{ probabilidad_ejecucion }}"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-percentage fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                Total de ejecuciones</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cant_procesos.0.0 }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-cogs fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Row -->
+
+  <div class="row">
+
+    <!-- Area Chart -->
+    <div class="col-xl-8 col-lg-7">
+      <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-wf ">
+          <h6 class="m-0 font-weight-bold text-white">Días utilizados Procesos</h6>
+          <div class="dropdown no-arrow">
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+              <div class="dropdown-header">Dropdown Header:</div>
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </div>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas id="procesodiferencia"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+
+      <!-- Project Card Example -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3 bg-wf ">
+          <h6 class="m-0 font-weight-bold text-white">Procesos Terminados</h6>
+        </div>
+        <div class="card-body">
+          {% for p in procesos_ejecutados %}
+          <a href="{% url 'tareas_ejecutadas_jefe' p.0 %}">
+              <h3 class="small font-weight-bold text-capitalize">ID {{ p.0 }} - {{ p.1 }} - {{ p.2 }}
+                  <span class="text-secondary"><i class="fas fa-clock fa-sm fa-fw"></i> Fecha Ejecución: {{ p.3 | date:"d/m/Y"  }}</span> <span class="float-right">{{ p.6 }}%</span>
+              </h3>
+              {% if p.5 > 0 %}
+              <div class="progress mb-4">
+                  <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
+                      role="progressbar" style="width: {{ p.6 }}%" aria-valuenow="{{ p.6 }}" aria-valuemin="0"
+                      aria-valuemax="100"></div>
+              </div>
+          </a>
+          {% else %}
+          <div class="progress mb-4">
+              <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                  role="progressbar" style="width: {{ p.6 }}%" aria-valuenow="{{ p.6 }}" aria-valuemin="0"
+                  aria-valuemax="100"></div>
+          </div>
+          </a>
+          {% endif %}
+          {% endfor %}
+      </div>
+      </div>
+
+      <!-- Color System -->
+    </div>
+
+  </div>
+  <!-- Content Row -->
+  <div class="row">
+    <!-- Content Column -->
+    <div class="col-xl-8 col-lg-7">
+      <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-wf">
+              <h6 class="m-0 font-weight-bold text-white">Promedio duración tareas</h6>
+              <div class="dropdown no-arrow">
+                  <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                      aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header">Dropdown Header:</div>
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="card-body">
+              <div class="chart-pie pt-4 pb-2">
+                  <canvas id="promedioTareas"></canvas>
+              </div>
+          </div>
+      </div>
+  </div>
+    
+    <div class="col-lg-4 mb-4">
+      <!-- Illustrations -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3 bg-wf ">
+          <h6 class="m-0 font-weight-bold text-capitalize text-white">{{procesos_tareas.0.0}}</h6>
+        </div>
+        <div class="card-body">
+          <div class="text-center">
+          </div>
+          <p class="text-capitalize" >{{procesos_tareas.0.1}}</p>
+          {% for p in procesos_tareas %}
+          <p class="text-capitalize">Tarea: {{ p.3 }} - Duración: {{ p.4 }}</p>
+          {% endfor %}
+          <a href="{% url 'editar_proceso' procesos_tareas.0.5 %}">Optimizar Proceso</a>
+          <a target="_blank" rel="nofollow" href="">
+            <p class="text-capitalize">Duración total flujo: {{ procesos_tareas.0.2 }}</p></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.container-fluid -->
+
+<script>
+  // Gráfico de las TAREAS Funcionarios
+  var ctx = document.getElementById("procesodiferencia");
+  var procesodiferencia = new Chart(ctx, {
+    type: 'line',
+  data: {
+    labels: [{% for fr in diferencia_proceso %} "{{ fr.3 }} - ID{{ fr.4 }}", {% endfor %}],
+
+    datasets: [{ 
+        data: [{% for fr in diferencia_proceso %} {{ fr.0 }}, {% endfor %}],
+        label: "Días Utilizados",
+        borderColor: "#1cc88a",
+        fill: true
+      },{ 
+        data: [{% for fr in diferencia_proceso %} {{ fr.1 }}, {% endfor %}],
+        label: "Total Días",
+        borderColor: "#3e95cd",
+        fill: true
+      },
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: '{{diferencia_proceso.0.2}}',
+      
+    },
+    scales: {
+            yAxes: [{
+                ticks: {
+                    suggestedMin: 0,
+                }
+            }]
+        },
+  }
+
+  });
+</script>
+
+<script>
+  // Gráfico de las TAREAS Funcionarios
+  var ctx = document.getElementById("promedioTareas");
+  var EstadisticaUnidadChart = new Chart(ctx, {
+      type: 'bar',
+
+      data: {
+          labels: [{% for tp in promedio_tareas %} "{{ tp.0 | title }}", {% endfor %}],
+  datasets: [{
+    label:'Duración estimada',
+      barPercentage: 0.5,
+      categoryPercentage: 0.8,
+      data: [{% for tp in promedio_tareas %} {{ tp.1 }}, {% endfor %}, 0],
+      backgroundColor: ['#42a5f5', '#1cc88a', '#e74a3b', '#f7ef05', '#fa9c05','#0215de'],
+
+      },{
+    label:'Promedio utilizado',
+      barPercentage: 0.5,
+      categoryPercentage: 0.8,
+      data: [{% for tp in promedio_tareas %} {{ tp.2 }}, {% endfor %}, 0],
+      backgroundColor: ['#42a5f5', '#1cc88a', '#e74a3b', '#f7ef05', '#fa9c05','#0215de'],
+
+      }
+      
+      
+      
+      ],
+      },
+  options: {
+      maintainAspectRatio: false,
+          tooltips: {
+          backgroundColor: "rgb(255,255,255)",
+              bodyFontColor: "#858796",
+                  borderColor: '#dddfeb',
+                      borderWidth: 1,
+                          xPadding: 15,
+                              yPadding: 15,
+                                  displayColors: false,
+                                      caretPadding: 10,
+          },
+      legend: {
+          display: false
+      },
+      cutoutPercentage: 80,
+      },
+  });
+</script>
+
+<!-- End of Main Content -->
+
+{% endblock %}
+

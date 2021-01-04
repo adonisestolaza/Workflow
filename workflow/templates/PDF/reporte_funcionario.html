@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Reporte Funcionario</title>
+    <style>
+        th, td{
+            padding: 5px 15px;
+        }
+        th{
+            font-size: 20px;
+            font-weight: bold;
+        }
+        td{
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1 style="text-align: center;" >Reporte Funcionario</h1>
+    <h2 style="text-align: left;">Generado por: {{ nombre }} {{ apellido }}</h2>
+    <h2 style="text-align: left;">Fecha: {{ fecha }}</h2>
+
+    <div class="row">
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                              Tus tareas en Curso (Activas): {{ tareas_encurso.0.1 }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clock fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                               Tus tareas Terminadas: {{ tareas_encurso.1.1 }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-double fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Cantidad de tareas en Espera -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                               Tu cantidad de tareas en espera: {{ tareas_encurso.2.1 }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-hand-paper fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Cantidad total de Tareas: {{ total_tareas.0.0 }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <table border="1" style="border-collapse: collapse;" >
+        <thead>
+            <tr>
+                <td>Country Name</td>
+                <td>Country Short Code</td>
+                <td>State Name</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for value in states %}
+                <tr>
+                    <td>{{value.country.country_name}}</td>
+                    <td>{{value.country.country_short}}</td>
+                    <td>{{value.state_name}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>            
+</body>
+</html>

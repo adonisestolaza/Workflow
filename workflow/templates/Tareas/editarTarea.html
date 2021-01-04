@@ -1,0 +1,114 @@
+{% extends 'menuPrincipal.html' %}
+
+{% block content %}
+<div class="container">
+  <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+    Editar Tarea<span class="text-primary text-capitalize"> {{ request.session.NombreProceso }}</span>
+  </h2>
+  <br>
+  <p>Para editar una tarea debe ingresar los nuevos valores</p>
+
+  <form class="col s12" method="POST">
+    {% csrf_token  %}
+    <div class="form-row">
+
+      <div class="col-4">
+        <div class="form-group">
+          <label class="mr-sm-2" for="cargo">Cargo</label>
+          <select class="custom-select mr-sm-2" name="cargo" id="cargo">
+            <option selected>Seleccione Cargo...</option>
+            {% for c in cargos  %}
+
+            <option value="{{ c.0 }}">{{ c.1 }}</option>
+
+            {% endfor  %}
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="col-8">
+        <div class="form-group">
+          <label for="tarea">Nombre Tarea</label>
+          <input id="tarea" class="form-control text-capitalize" type="text" class="validate" name="tarea" required
+            placeholder="Ingrese Nombre de la Tarea " value="{{ request.session.NombreTarea }}">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="col-8">
+        <div class="form-group">
+          <label for="descripcionTarea">Descripción Tarea</label>
+          <input id="descripcionTarea" class="form-control text-capitalize" type="text" class="validate" name="descripcionTarea"
+            required placeholder="Ingrese Descripción de la Tarea" value="{{ request.session.DescripcionTarea }}">
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="col-8">
+        <div class="form-group">
+          <label for="tiempo">Duración de la Tarea (Días)</label>
+          <input id="tiempo" class="form-control" type="number" class="validate" name="tiempo" required
+            placeholder="Ingrese Tiempo de la Tarea " value="{{ request.session.DuracionTarea }}">
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="col-8">
+        <div class="form-group">
+          <label for="orden">Orden de la Tarea </label>
+          <input id="orden" class="form-control" type="number" class="validate" name="orden" required
+            placeholder="Ingrese Orden de la Tarea " value="{{ request.session.OrdenTarea }}">
+        </div>
+
+      </div>
+
+    </div>
+
+    <div>
+    <button class="btn btn-success" type="submit" name="action" value="Guardar">Editar Tarea</button>
+  </div>
+
+
+<!-- Boton de agregar el Proceso -->
+
+
+</form>
+
+<script type="text/javascript">
+
+  window.onload = function () {
+  
+      debugger;
+      var cargo = "{{ tarea.cargo_idcargo.idcargo }}"
+  
+      if (cargo != "") {
+        $('#cargo').val(cargo)
+       
+  
+      }
+  
+    };
+  
+  </script>
+
+
+
+
+</div>
+
+{% endblock %}

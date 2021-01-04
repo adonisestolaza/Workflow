@@ -1,0 +1,264 @@
+{% extends 'menuPrincipal.html' %} {% block tittle %} Registrar Usuario {% endblock %} {% load static %} {% load crispy_forms_tags %} {% block content %}
+
+<div class="container">
+
+    <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+        Crear Nuevo <span class="text-primary"> Usuario</span>
+    </h2>
+    <p>Para registrar un nuevo usuario debe llenar los campos necesarios en este Formulario</p>
+
+    <div class="from-group">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>
+                <div class="alert alert-success">{{ message }}</div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+    </div>
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+
+        <div class="form-group">
+            <img class="" src="{% static 'img/User-Icon2.jpg' %}" alt="">
+        </div>
+
+        <div class="form-row">
+            <div class="col-6">
+                {{ form.rol|as_crispy_field }}
+            </div>
+
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="form-group" id="div_empresa">
+
+                    {{ form.empresa|as_crispy_field }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group" id="div_unidad">
+
+
+
+                    <label class="mr-sm-2" for="unidadId">Unidad</label>
+                    <select class="custom-select mr-sm-2" name="unidad" id="unidadId" onchange="cambiarCargo()"></select>
+
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group" id="div_cargo">
+                    <label class="mr-sm-2" for="cargo">Cargo</label>
+                    <select class="custom-select mr-sm-2" name="cargo" id="cargo">
+            
+          </select>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+        <div class="form-group">
+
+            <label for="rut">Rut</label>
+            <input type="text" class="form-control" name="rut" id="rut" required oninput="checkRut(this)" placeholder="Ingrese RUT" maxlength="10">
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+
+                    {{ form.nombres|as_crispy_field }}
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+
+                    {{ form.apellidos|as_crispy_field }}
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            {{ form.direccion|as_crispy_field }}
+        </div>
+
+        <div class="form-group">
+
+            {{ form.telefono|as_crispy_field }}
+        </div>
+
+        <div class="form-group">
+
+            {{ form.correo|as_crispy_field }}
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+
+                    {{ form.password1|as_crispy_field }}
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+
+                    {{ form.password2|as_crispy_field }}
+                </div>
+            </div>
+
+        </div>
+
+        <br>
+
+
+
+        <button class="btn btn-success" type="submit" name="action">Agregar Usuario</button>
+
+    </form>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        $('#div_empresa').hide()
+        $('#div_unidad').hide()
+        $('#div_cargo').hide()
+
+    });
+
+    function Cambiar() {
+
+        var valor = $('#id_rol').val();
+
+        if (valor == "1" || valor == "2") {
+            $('#div_empresa').show()
+            $('#div_unidad').hide()
+            $('#div_cargo').hide()
+            $('#id_empresa').val(1)
+            $('#id_empresa').prop('disabled', 'disabled')
+
+
+        } else {
+            $('#div_empresa').show()
+            $('#id_empresa').prop('disabled', false)
+            $('#id_empresa').val("")
+
+
+        }
+    };
+
+    function checkRut(rut) {
+        // Despejar Puntos
+        var valor = rut.value.replace('.', '');
+        // Despejar Guión
+        valor = valor.replace('-', '');
+
+        // Aislar Cuerpo y Dígito Verificador
+        cuerpo = valor.slice(0, -1);
+        dv = valor.slice(-1).toUpperCase();
+
+        // Formatear RUN
+        rut.value = cuerpo + '-' + dv
+
+        // Si no cumple con el mínimo ej. (n.nnn.nnn)
+        if (cuerpo.length < 7) {
+            rut.setCustomValidity("RUT Incompleto");
+            return false;
+        }
+
+        // Calcular Dígito Verificador
+        suma = 0;
+        multiplo = 2;
+
+        // Para cada dígito del Cuerpo
+        for (i = 1; i <= cuerpo.length; i++) {
+
+            // Obtener su Producto con el Múltiplo Correspondiente
+            index = multiplo * valor.charAt(cuerpo.length - i);
+
+            // Sumar al Contador General
+            suma = suma + index;
+
+            // Consolidar Múltiplo dentro del rango [2,7]
+            if (multiplo < 7) {
+                multiplo = multiplo + 1;
+            } else {
+                multiplo = 2;
+            }
+
+        }
+
+        // Calcular Dígito Verificador en base al Módulo 11
+        dvEsperado = 11 - (suma % 11);
+
+        // Casos Especiales (0 y K)
+        dv = (dv == 'K') ? 10 : dv;
+        dv = (dv == 0) ? 11 : dv;
+
+        // Validar que el Cuerpo coincide con su Dígito Verificador
+        if (dvEsperado != dv) {
+            rut.setCustomValidity("RUT Inválido");
+            return false;
+        }
+
+        // Si todo sale bien, eliminar errores (decretar que es válido)
+        rut.setCustomValidity('');
+    };
+</script>
+
+<script>
+    function cambiarUnidad() {
+
+        let empresaid = document.getElementById("id_empresa").value;
+        let url = "/ejecucion/unidades/?empresa_id=" + empresaid;
+        fetch(url)
+            .then(function(result) {
+                $('#div_unidad').show()
+                return result.text();
+            })
+            .then(function(result) {
+
+                document.getElementById("unidadId").innerHTML = result;
+            });
+    };
+
+    function cambiarCargo() {
+
+        let unidadid = document.getElementById("unidadId").value;
+        let url = "/mainwork/cargosfunc/?unidad=" + unidadid;
+        fetch(url)
+            .then(function(result) {
+
+                $('#div_cargo').show()
+                return result.text();
+            })
+            .then(function(result) {
+
+                document.getElementById("cargo").innerHTML = result;
+            });
+    };
+</script>
+
+{% endblock %}

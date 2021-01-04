@@ -1,0 +1,27 @@
+<thead class="table-dark text-white text-center">
+  <tr>
+    <th>Proceso</th>
+    <th>Tarea</th>
+    <th>Descripción</th>
+    <th>Duración (Días)</th>
+    <th>Orden Tarea</th>
+    <th>Cargo</th>
+    <th>Opciones</th>
+  </tr>
+</thead>
+{% for i in procesos_tarea%}
+<tbody class="text-center">
+  <tr>
+    <td>{{ i.0 }}</td>
+    <td>{{ i.1 }}</td>
+    <td>{{ i.2 }}</td>
+    <td>{{ i.3 }}</td>
+    <td>{{ i.4 }}</td>
+    <td>{{ i.5 }}</td>
+    <td>
+      <a href="#" class="btn bg-orange btn-sm"><i class="fas fa-edit"></i></a>
+      <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
+    </td>
+  </tr>
+</tbody>
+{% endfor %}

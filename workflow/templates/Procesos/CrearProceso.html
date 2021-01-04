@@ -1,0 +1,255 @@
+{% extends 'menuPrincipal.html' %}
+
+{% block content %}
+<div class="container">
+
+  <h2 class="display-5 font-weight-bold text-secondary mt-lg-n2">
+    Crear Nuevo <span class="text-primary"> Proceso Tipo</span>
+  </h2>
+  <p>Para registrar un nuevo proceso debe llenar los campos necesarios en este Formulario</p>
+
+  <div class="from-group">
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li>
+        <div class="alert alert-success">{{ message }}</div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+  </div>
+
+
+  <form method="POST">
+    {% csrf_token  %}
+
+    <div class="form-row">
+      <div class="col-4">
+
+        <div class="form-group">
+          <label for="empresa">Empresa</label>
+          <select name="empresa" class="form-control" id="empresa" required onchange="cambiarUnidad()">
+            {% for e in empresas %}
+            <option value="{{ e.0 }}">{{ e.2 }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="form-group">
+          <label class="mr-sm-2" for="unidad">Unidad</label>
+          <select class="custom-select mr-sm-2" name="unidad" id="unidad">
+            <option selected>Seleccione Unidad...</option>
+          </select>
+          </select>
+        </div>
+      </div>
+
+    </div>
+    <div class="form-row">
+
+      <div class="col-8">
+        <div class="form-group">
+          <label for="nombre_proceso">Nombre del Proceso</label>
+          <input id="nombre_proceso" class="form-control" type="text" class="validate" name="nombre_proceso" required
+            placeholder="Ingrese Nombre del Proceso ">
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-row">
+      <div class="col-8">
+
+        <label for="descripcion">Descripción del Proceso</label>
+        <input id="descripcion" class="form-control" type="text" class="validate" name="descripcion" required
+          placeholder="Ingrese Descripción del Proceso ">
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+
+
+
+
+    <!-- Boton de agregar el Proceso -->
+
+    <button class="btn btn-success" type="submit" name="action" value="Guardar">Agregar Proceso Tipo</button>
+  </form>
+
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal" style="width:50%; height:70%">
+    <div class="modal-content ">
+      <h4 class="blue-text darken-2">Ingrese Ítem de Servicio</h4>
+      <form id="formulario" method="">
+        {% csrf_token %}
+        <div class="input-field col s12">
+          <i class="material-icons prefix">work</i>
+          <select name="cargo" id="cargo">
+            {% for c in cargos %}
+            <option value="{{ c.0 }}">{{ c.1 }}</option>
+            {% endfor %}
+          </select>
+          <label>Seleccione Cargo</label>
+        </div>
+
+        <div class="input field col s12">
+          <label for="tarea">Nombre Tarea</label>
+          <input value="" id="tarea" name="tarea" type="text" required>
+        </div>
+        <div class="input field col s12">
+          <label for="descripcionTarea">Descripción Tarea</label>
+          <input value="" id="descripcionTarea" name="descripcionTarea" type="text" required>
+        </div>
+        <div class="input field col s12" required>
+          <label for="tiempo">Tiempo en Días</label>
+          <input value="" id="tiempo" name="tiempo" type="number" required>
+        </div>
+        <div class="modal-footer">
+
+          <button class="left waves-effect waves-light btn-large blue darken-3"
+            onclick="agregarFila(tarea.value, descripcionTarea.value, tiempo.value, cargo.value, cargo.options[cargo.selectedIndex].text )"
+            name="AddTarea" value="AddTarea" type="reset">Agregar Tarea<i
+              class="material-icons right">library_add</i></a>
+          </button>
+
+          <a class="modal-close waves-effect waves-light btn-large red darken-3">
+            <i class="material-icons right">close</i>Cerrar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+</div>
+
+<script>
+  //validacion de caracteres especiales en formularios
+  $("#formulario").keypress(function (event) {
+    var character = String.fromCharCode(event.keyCode);
+    return isValid(character);
+  });
+
+  function isValid(str) {
+    return !/[~`!#$%\^&*()=\\[\]\\';/{}|\\":<>\?]/g.test(str);
+  }
+</script>
+
+
+
+
+
+<script>
+  $('#agregarInvoice').click(function (e) {
+    // prevent click action
+    e.preventDefault();
+    // your code here
+    return false;
+  });
+</script>
+
+<script>
+  function cambiarUnidad() {
+
+    let empresaid = document.getElementById("empresa").value;
+    let url = "/ejecucion/unidades/?empresa_id=" + empresaid;
+    fetch(url)
+      .then(function (result) {
+        return result.text();
+      })
+      .then(function (result) {
+        document.getElementById("unidad").innerHTML = result;
+      });
+  }
+</script>
+
+<script>
+  function agregarFila(tarea, descripcion, tiempo, cargoid, cargo) {
+
+    if (tarea.trim() == '') {
+      M.toast({
+        html: 'Porfavor ingrese Item de Servicio',
+        classes: 'rounded orange'
+      })
+      $('#item').formSelect();
+      return false;
+    }
+    if (descripcion.trim() == '') {
+      M.toast({
+        html: 'Porfavor ingrese descripción',
+        classes: 'rounded orange'
+      })
+      $('#descripcionItem').focus();
+      return false;
+    }
+    if (tiempo.trim() == '') {
+      M.toast({
+        html: 'Porfavor ingrese Valor',
+        classes: 'rounded orange'
+      })
+      $('#valorItem').focus();
+      return false;
+    }
+    if (cargo.trim() == '') {
+      M.toast({
+        html: 'Porfavor ingrese Valor',
+        classes: 'rounded orange'
+      })
+      $('#valorItem').focus();
+      return false;
+    } else {
+      var table = document.getElementById("tablaItems");
+      var row = table.insertRow(-1);
+
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      var cell4 = row.insertCell(3);
+      var cell5 = row.insertCell(4);
+      var cell6 = row.insertCell(5);
+      // Add some text to the new cells:
+      cell1.innerHTML = tarea;
+      cell2.innerHTML = descripcion;
+      cell3.innerHTML = tiempo;
+      cell4.innerHTML = cargo;
+      cell5.innerHTML = cargoid;
+      cell6.innerHTML = '<input class="btn red" type="button" value="Borrar" onclick="eliminarFilaID(this)">';
+      M.toast({
+        html: '¡Agregado exitosamente!',
+        classes: 'rounded green'
+      })
+    }
+  }
+
+  function eliminarFila() {
+    document.getElementById("tablaItems").deleteRow(-1);
+    M.toast({
+      html: '¡Eliminada exitosamente!',
+      classes: 'rounded red'
+    })
+  }
+
+  function eliminarFilaID(r) {
+    var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("tablaItems").deleteRow(i - 1);
+    M.toast({
+      html: '¡Eliminada exitosamente!',
+      classes: 'rounded red'
+    })
+  }
+</script>
+
+<script>
+  $('.dropdown-trigger').dropdown();
+</script>
+
+
+{% endblock %}
